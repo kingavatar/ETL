@@ -12,22 +12,31 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
-    "typeRoots": ["node_modules/@types", "./src/types"],
-    "types": ["webpack-env", "mocha", "chai"],
+    "types": [
+      "webpack-env",
+      "mocha",
+      "chai"
+    ],
     "paths": {
-      "@/*": ["src/*"],
-      "*":["./src/types/*"]
+      "@/*": [
+        "src/*"
+      ]
     },
-    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ]
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx",
-    "src/types/*.d.ts",
-    "src/types/raw-loader.d.ts"
-, "src/store/index.ts"  ],
-  "exclude": ["node_modules"]
+    "tests/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
