@@ -1,0 +1,112 @@
+<schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://GroupName-017/temporary" xmlns:sample="http://GroupName-017/temporary">
+  <element name="ETL" type="sample:ETLType" />
+  <complexType name="sourceinfoType">
+    <sequence>
+      <choice>
+        <element ref="sample:SQL"/>
+        <element ref="sample:FTP"/>
+      </choice>
+    </sequence>
+  </complexType>
+
+  <element name="SQL" type="sample:sqlProtocolType"/> 
+  <element name="FTP" type="sample:ftpProtocolType"/> 
+
+
+    <complexType name="sqlProtocolType">
+      <sequence>
+        <element type="string" name="name" />
+        <element type="string" name="driver" />
+        <element type="string" name="username" />
+        <element type="string" name="password" />
+      </sequence>
+    </complexType>
+
+    <complexType name="ftpProtocolType">
+      <sequence>
+        <element type="string" name="username" />
+        <element type="string" name="password" />
+        <element type="string" name="ip-address"/>
+      </sequence>
+    </complexType>
+
+
+
+  <complexType name="sourceDetailsType">
+    <sequence>
+      <element type="sample:sourceinfoType" name="sourceinfo" />
+    </sequence>
+  </complexType>
+
+
+  <complexType name="ExecutionSequenceType">
+    <sequence>
+      <element type="string" name="Query" maxOccurs="unbounded" minOccurs="0" />
+    </sequence>
+  </complexType>
+
+
+  <complexType name="TextTransformationType">
+    <sequence >
+      <element type="string" name="attribute" />
+      <element type="string" name="sourcePattern" />
+      <element type="string" name="destinationPattern" />
+    </sequence>
+  </complexType>
+
+
+  <complexType name="ArthimeticTransformationType">
+    <sequence>
+      <element type="string" name="Attribute" minOccurs="1" maxOccurs="unbounded" />
+      <element type="string" name="arthimeticFormulae" />
+    </sequence>
+  </complexType>
+
+
+  <complexType name="TransformationDetailsType">
+    <choice minOccurs="0" maxOccurs="unbounded">
+      <element type="sample:TextTransformationType" name="TextTransformation" minOccurs="0" maxOccurs="unbounded" />
+      <element type="sample:ArthimeticTransformationType" name="ArthimeticTransformation" minOccurs="0" maxOccurs="unbounded" />
+    </choice>
+  </complexType>
+
+
+  <complexType name="DestinationInfoType">
+    <sequence>
+      <element type="string" name="name" />
+      <element type="string" name="driver" />
+      <element type="string" name="protocol" />
+      <element type="string" name="username" />
+      <element type="string" name="password" />
+    </sequence>
+  </complexType>
+
+  <complexType name="mappingType">
+    <sequence> 
+      <element type="sample:mapType" name="Map" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+  </complexType>
+
+  <complexType name="mapType">
+      <sequence> 
+        <element name="source" type="string"/>
+        <element name="Destination" type="string"/>
+      </sequence>
+  </complexType>
+
+  <complexType name="DestinationDetailsType">
+    <sequence> 
+      <element type="sample:DestinationInfoType" name="DestinationInfo" />
+      <element type="sample:mappingType" name="Mapping" />
+    </sequence>
+  </complexType>
+  
+  <complexType name="ETLType">
+    <sequence>
+      <element type="sample:sourceDetailsType" name="sourceDetails" minOccurs="1" maxOccurs="unbounded"/>
+      <element type="sample:ExecutionSequenceType" name="ExecutionSequence" />
+      <element type="sample:TransformationDetailsType" name="TransformationDetails" />
+      <element type="sample:DestinationDetailsType" name="DestinationDetails" minOccurs="1" maxOccurs="unbounded"/>
+    </sequence>
+  </complexType>
+</schema>
