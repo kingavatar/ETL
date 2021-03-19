@@ -8,7 +8,8 @@
     >
     <b-form-input
         v-if="type=='string'"
-        :id="name"
+        style="margin-left:10px;margin-right:10px;margin-top:10px;margin-bottom:10px;"
+        :id="type+name"
       ></b-form-input>
       <div v-else>
       <div v-if="elementPresent">
@@ -136,6 +137,8 @@ export default {
     ])
   }
 };
+
+
 </script>
 
 <style lang="scss" scoped>
