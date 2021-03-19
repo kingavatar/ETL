@@ -123,11 +123,19 @@
         >
       </li>
     </ul>
+    <b-form-input
+          id="input-1"
+          v-model="form.email"
+          type="email"
+          placeholder="Enter email"
+          required
+        ></b-form-input>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+
 
 @Component
 export default class HelloWorld extends Vue {
