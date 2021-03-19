@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ETL xmlns ="http://GroupName-017/temporary" >
+	<sourceDetails>
+		<sourceinfo>
+			<SQL>
+				<name>Employee SQl DataSource</name>
+				<driver>org.mysql</driver>
+				<username>group17</username>
+				<password>password</password>
+			</SQL>
+		</sourceinfo>
+	</sourceDetails>
+	<ExecutionSequence>
+		<Query>SELECT Salary from EMPLOYEE</Query>
+		<Query>SELECT Salary from EMPLOYEE</Query>
+		<Query>SELECT Salary from EMPLOYEE</Query>
+	</ExecutionSequence>
+	<TransformationDetails>
+		<TextTransformation>
+			<attribute>C</attribute>
+			<sourcePattern>^Bengaluru$</sourcePattern>
+			<destinationPattern>Bangalore</destinationPattern>
+		</TextTransformation>
+		<ArthimeticTransformation>
+			<Attribute>cost</Attribute>
+			<arthimeticFormulae>a/100</arthimeticFormulae>
+		</ArthimeticTransformation>
+	</TransformationDetails>
+	<DestinationDetails>
+		<DestinationInfo>
+			<name>Datawarehouse</name>
+			<driver>org.mysql</driver>
+			<protocol>SQl</protocol>
+			<username>Datawarehouse</username>
+			<password>pass2</password>
+		</DestinationInfo>
+    	<Mapping>
+    		<Map>
+    			<source>A</source>
+    			<Destination>B</Destination>
+    		</Map>
+    		<Map>
+      			<source>C</source>
+      			<Destination>D</Destination>
+    		</Map>
+    		<Map>
+     		 	<source>cost</source>
+      			<Destination>Total cost</Destination>
+    		</Map>
+    	</Mapping>
+	</DestinationDetails>
+</ETL>
