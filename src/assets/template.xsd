@@ -62,9 +62,10 @@
 
 
   <complexType name="TransformationDetailsType">
-    <choice minOccurs="0" maxOccurs="unbounded">
-      <element type="sample:TextTransformationType" name="TextTransformation" minOccurs="0" maxOccurs="unbounded" />
-      <element type="sample:ArthimeticTransformationType" name="ArthimeticTransformation" minOccurs="0" maxOccurs="unbounded" />
+<choice >
+  <element type="sample:TextTransformationType" name="TextTransformation" />
+  <element type="sample:ArthimeticTransformationType" name="ArthimeticTransformation" />
+
     </choice>
   </complexType>
 
@@ -103,7 +104,8 @@
     <sequence>
       <element type="sample:sourceDetailsType" name="sourceDetails" minOccurs="1" maxOccurs="unbounded"/>
       <element type="sample:ExecutionSequenceType" name="ExecutionSequence" />
-      <element type="sample:TransformationDetailsType" name="TransformationDetails" />
+<element type="sample:TransformationDetailsType" name="TransformationDetails" minOccurs="0" maxOccurs="unbounded"/>
+
       <element type="sample:DestinationDetailsType" name="DestinationDetails" minOccurs="1" maxOccurs="unbounded"/>
     </sequence>
   </complexType>
