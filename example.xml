@@ -11,27 +11,10 @@
 		</sourceinfo>
 	</sourceDetails>
 	<ExecutionSequence>
-		<Query>SELECT Salary,location from employee</Query>
-		<!-- <Query>SELECT id from EMPLOYEE</Query> -->
-		<!-- <Query>SELECT Salary from EMPLOYEE</Query> -->
-	</ExecutionSequence>
-	<TransformationDetails>
-		<TextTransformation>
-			<attribute>location</attribute>
-			<sourcePattern>Bengaluru</sourcePattern>
-			<destinationPattern>Bangalore</destinationPattern>
-		</TextTransformation>
-		<TextTransformation>
-			<attribute>location</attribute>
-			<sourcePattern>Bezawada</sourcePattern>
-			<destinationPattern>Vijayawada</destinationPattern>
-		</TextTransformation>
-		<ArthimeticTransformation>
-			<attribute>salary</attribute>
-			<arthimeticFormulae>salary/10</arthimeticFormulae>
-		</ArthimeticTransformation>
-	</TransformationDetails>
-	<DestinationDetails>
+		<Query>select salary,location,id from employee</Query>
+		<!-- <Query>select location from employee</Query> -->
+		<!-- <Query>select id from employee</Query> -->
+		<DestinationDetails>
 		<DestinationInfo>
 			<name>datawarehouse</name>
 			<driver>org.mysql</driver>
@@ -39,15 +22,38 @@
 			<username>sanjay</username>
 			<password>Sskr321@</password>
 		</DestinationInfo>
-    	<Mapping>
-    		<Map>
-      			<source>C</source>
-      			<Destination>D</Destination>
-    		</Map>
-    		<Map>
-     		 	<source>cost</source>
-      			<Destination>Total cost</Destination>
-    		</Map>
-    	</Mapping>
 	</DestinationDetails>
+	</ExecutionSequence>
+	<TransformationDetails>
+		<TextTransformation>
+			<sourceAttribute>location</sourceAttribute>
+			<destinationAttribute>LOC</destinationAttribute>
+			<sourcePattern>Bengaluru</sourcePattern>
+			<destinationPattern>Bangalore</destinationPattern>
+		</TextTransformation>
+		<TextTransformation>
+			<sourceAttribute>location</sourceAttribute>
+			<destinationAttribute>LOC</destinationAttribute>
+			<sourcePattern>Bezawada</sourcePattern>
+			<destinationPattern>Vijayawada</destinationPattern>
+		</TextTransformation>
+		<ArthimeticTransformation>
+			<sourceAttribute>salary</sourceAttribute>
+			<destinationAttribute>INR</destinationAttribute>
+			<arthimeticFormulae>salary/75</arthimeticFormulae>
+		</ArthimeticTransformation>
+		<NullTransformation>
+			<sourceAttribute>id</sourceAttribute>
+			<destinationAttribute>EMP_ID</destinationAttribute>
+		</NullTransformation>
+	</TransformationDetails>
+	<!-- <DestinationDetails>
+		<DestinationInfo>
+			<name>datawarehouse</name>
+			<driver>org.mysql</driver>
+			<protocol>SQl</protocol>
+			<username>sanjay</username>
+			<password>Sskr321@</password>
+		</DestinationInfo>
+	</DestinationDetails> -->
 </ETL>

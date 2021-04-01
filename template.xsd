@@ -38,15 +38,17 @@
 
 
   <complexType name="ExecutionSequenceType">
-    <sequence>
-      <element type="string" name="Query" maxOccurs="unbounded" minOccurs="0" />
+    <sequence >
+      <element type="string" name="Query" maxOccurs="1" minOccurs="1" />
+      <element type="sample:DestinationDetailsType" name="DestinationDetails" maxOccurs="1" minOccurs="1" />
     </sequence>
   </complexType>
 
 
   <complexType name="TextTransformationType">
     <sequence >
-      <element type="string" name="attribute" />
+      <element type="string" name="sourceAttribute" />
+      <element type="string" name="destinationAttribute"/>
       <element type="string" name="sourcePattern" />
       <element type="string" name="destinationPattern" />
     </sequence>
@@ -55,16 +57,25 @@
 
   <complexType name="ArthimeticTransformationType">
     <sequence>
-      <element type="string" name="Attribute" minOccurs="1" maxOccurs="unbounded" />
+      <element type="string" name="sourceAttribute"  />
+      <element type="string" name="destinationAttribute"/>
       <element type="string" name="arthimeticFormulae" />
+    </sequence>
+  </complexType>
+
+  <complexType name="NullTransformationType">
+    <sequence>
+      <element type="string" name="sourceAttribute"  />
+      <element type="string" name="destinationAttribute" />
     </sequence>
   </complexType>
 
 
   <complexType name="TransformationDetailsType">
     <choice minOccurs="0" maxOccurs="unbounded">
-      <element type="sample:TextTransformationType" name="TextTransformation" minOccurs="0" maxOccurs="unbounded" />
-      <element type="sample:ArthimeticTransformationType" name="ArthimeticTransformation" minOccurs="0" maxOccurs="unbounded" />
+      <element type="sample:TextTransformationType" name="TextTransformation" />
+      <element type="sample:ArthimeticTransformationType" name="ArthimeticTransformation" />
+      <element type="sample:NullTransformationType" name="NullTransformation" />
     </choice>
   </complexType>
 
@@ -79,23 +90,9 @@
     </sequence>
   </complexType>
 
-  <complexType name="mappingType">
-    <sequence>
-      <element type="sample:mapType" name="Map" minOccurs="0" maxOccurs="unbounded"/>
-    </sequence>
-  </complexType>
-
-  <complexType name="mapType">
-    <sequence>
-      <element name="source" type="string"/>
-      <element name="Destination" type="string"/>
-    </sequence>
-  </complexType>
-
   <complexType name="DestinationDetailsType">
     <sequence>
       <element type="sample:DestinationInfoType" name="DestinationInfo" />
-      <element type="sample:mappingType" name="Mapping" />
     </sequence>
   </complexType>
 
@@ -103,8 +100,8 @@
     <sequence>
       <element type="sample:sourceDetailsType" name="sourceDetails" minOccurs="1" maxOccurs="unbounded"/>
       <element type="sample:ExecutionSequenceType" name="ExecutionSequence" />
-      <element type="sample:TransformationDetailsType" name="TransformationDetails" />
-      <element type="sample:DestinationDetailsType" name="DestinationDetails" minOccurs="1" maxOccurs="unbounded"/>
+      <element type="sample:TransformationDetailsType" name="TransformationDetails" minOccurs="0" maxOccurs="unbounded"/>
+      <!-- <element type="sample:DestinationDetailsType" name="DestinationDetails" minOccurs="1" maxOccurs="unbounded"/> -->
     </sequence>
   </complexType>
 </schema>
