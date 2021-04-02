@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ETL xmlns ="http://GroupName-017/temporary" >
+	<sourceDetails>
+		<sourceinfo>
+			<SQL>
+				<name>employee</name>
+				<driver>org.mysql</driver>
+				<username>osurihimeshkrishna</username>
+				<password>password</password>
+			</SQL>
+		</sourceinfo>
+	</sourceDetails>
+	<ExecutionSequence>
+		<QueryStm>
+			<Query>select id,salary,location from employee</Query>
+			<!-- select id,salary,location,manager_name from employee,manager where emp.id=masd.id -->
+			<DstTable>datawarehouse</DstTable>	
+		</QueryStm>
+		<!-- <QueryStm>
+			<Query>select manager_name from manager</Query>
+			<DstTable>datawarehouse</DstTable>
+		</QueryStm> -->
+	</ExecutionSequence>
+	<TransformationDetails>
+		<TextTransformation>
+			<sourceAttribute>location</sourceAttribute>
+			<destinationAttribute>location_1</destinationAttribute>
+			<sourcePattern>Bengaluru</sourcePattern>
+			<destinationPattern>Bangalore</destinationPattern>
+		</TextTransformation>
+		<TextTransformation>
+			<sourceAttribute>location</sourceAttribute>
+			<destinationAttribute>location_1</destinationAttribute>
+			<sourcePattern>Bezawada</sourcePattern>
+			<destinationPattern>Vijayawada</destinationPattern>
+		</TextTransformation>
+		<ArthimeticTransformation>
+			<sourceAttribute>salary</sourceAttribute>
+			<destinationAttribute>salary_1</destinationAttribute>
+			<arthimeticFormulae>salary/75</arthimeticFormulae>
+		</ArthimeticTransformation>
+		<NullTransformation>
+			<sourceAttribute>id</sourceAttribute>
+			<destinationAttribute>id_1</destinationAttribute>
+		</NullTransformation>
+	</TransformationDetails>
+	<DestinationDetails>
+		<DestinationInfo>
+			<name>datawarehouse</name>
+			<driver>org.mysql</driver>
+			<protocol>SQl</protocol>
+			<username>osurihimeshkrishna</username>
+			<password>password</password>
+		</DestinationInfo>
+	</DestinationDetails>
+</ETL>
