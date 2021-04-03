@@ -1,27 +1,18 @@
 <template>
   <div class="home">
-    <!-- <img
-      alt="Vue logo"
-      src="../assets/logo.png"
-    /> -->
-    <!-- <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" /> -->
-    <XmlForm :xsdFile="xmlData" />
+    <img alt="Vue logo" src="../assets/logo.png" />
+    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
   </div>
 </template>
 
 <script lang="ts">
-// import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
-import xmlData from "!!raw-loader!@/assets/template.xsd";
-import XmlForm from "@/components/XsdForm.vue";
-import Vue from "vue";
+import { Component, Vue } from "vue-property-decorator";
+import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
 
-export default Vue.extend({
+@Component({
   components: {
-    // HelloWorld,
-    XmlForm
-  },
-  data() {
-    return { xmlData: xmlData };
+    HelloWorld
   }
-});
+})
+export default class Home extends Vue {}
 </script>
