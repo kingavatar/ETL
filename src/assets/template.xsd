@@ -5,7 +5,8 @@
   <complexType name="sourceinfoType">
     <sequence>
       <choice>
-        <element name="SQL" type="sample:sqlProtocolType"/>
+    <element name="SQL" type="sample:sqlProtocolType"/>
+
         <element name="FTP" type="sample:ftpProtocolType"/>
       </choice>
     </sequence>
@@ -102,7 +103,8 @@
 
   <complexType name="ETLType">
     <sequence>
-      <element type="sample:sourceDetailsType" name="sourceDetails" minOccurs="1" maxOccurs="unbounded"/>
+<element type="sample:sourceDetailsType" name="sourceDetails"/>
+
       <element type="sample:ExecutionSequenceType" name="ExecutionSequence" />
 <element type="sample:TransformationDetailsType" name="TransformationDetails" minOccurs="0" maxOccurs="unbounded"/>
 

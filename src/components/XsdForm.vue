@@ -1,9 +1,20 @@
 <template>
-  <b-container fluid class="main-form shadow" style="padding:0px;">
+  <b-container fluid class="main-form" style="padding:0px;">
+    <b-row>
+      <b-col>
+        <b-button>Back</b-button>
+      </b-col>
+      <b-col>
+        <b-button @click="getXML">Run</b-button>
+      </b-col>
+    </b-row>
     <XmlElementForm
+      class="shadow"
+      v-bind:key="getJson.schema.element.name"
       :name="getJson.schema.element.name"
       :type="getJson.schema.element.type"
       parentType=""
+      ref="xmlForm"
       idx=""
     />
   </b-container>
@@ -18,7 +29,31 @@ import Vue from "vue";
 export default Vue.extend({
   name: "XsdForm",
   props: { xsdFile: String },
+  data() {
+    return {};
+  },
   components: { XmlElementForm },
+  methods: {
+    generateXml(ref, xmlFile) {
+      if ("elems" in ref.$refs) {
+        xmlFile.push("<" + ref.$props.name + ">");
+        ref.$refs.elems.forEach(value => {
+          this.generateXml(value, xmlFile);
+        });
+        xmlFile.push("</" + ref.$props.name + ">");
+      } else if ("formInput" in ref.$refs) {
+        xmlFile.push("<" + ref.$props.name + ">");
+        xmlFile.push(ref.formValue);
+        xmlFile.push("</" + ref.$props.name + ">");
+      }
+    },
+    getXML() {
+      const xmlFile = [];
+      this.generateXml(this.$refs.xmlForm, xmlFile);
+      const xmlString = xmlFile.join("\n");
+      console.log(xmlString);
+    }
+  },
   computed: {
     options() {
       return {
@@ -49,11 +84,6 @@ export default Vue.extend({
     // if (result !== true) console.log(result.err);
     // this.jsonObj = parser.parse(this.xsdFile, this.options);
     // console.log(this.jsonObj);
-  },
-  data() {
-    return {
-      // jsonObj:{},
-    };
   }
 });
 </script>
