@@ -43,7 +43,7 @@ class ETLEngine:
         q = []
         for query in exe_seq:
             q.append(query.firstChild.data)
-        #extracting table,columns for query
+        #extracting table,columns from query
         for qu in q:
             self.table = re.search('(?<=from )(\w+)', qu).group(1)
             from_str = re.search('(?<=select )(.*)(?=from)', qu).group(1)
@@ -151,5 +151,5 @@ class ETLEngine:
 
 
 if __name__ == "__main__" :
-    e = ETLEngine("example.xml")
+    e = ETLEngine("example_2.xml")
     e.run()
