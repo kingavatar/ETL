@@ -37,10 +37,10 @@
   </complexType>
 
 
-  <complexType name="ExecutionSequenceType">
+  <complexType name="Extract">
     <sequence >
       <element type="string" name="Query" maxOccurs="1" minOccurs="1" />
-      <element type="sample:DestinationDetailsType" name="DestinationDetails" maxOccurs="1" minOccurs="1" />
+      <element type="string" name="DstTable" maxOccurs="1" minOccurs="1" />
     </sequence>
   </complexType>
 
@@ -97,11 +97,13 @@
   </complexType>
 
   <complexType name="ETLType">
-    <sequence>
-      <element type="sample:sourceDetailsType" name="sourceDetails" minOccurs="1" maxOccurs="unbounded"/>
-      <element type="sample:ExecutionSequenceType" name="ExecutionSequence" />
-      <element type="sample:TransformationDetailsType" name="TransformationDetails" minOccurs="0" maxOccurs="unbounded"/>
-      <!-- <element type="sample:DestinationDetailsType" name="DestinationDetails" minOccurs="1" maxOccurs="unbounded"/> -->
-    </sequence>
+    <element name="ET" minOccurs="1" maxOccurs="unbounded">
+      <sequence>
+        <element type="sample:sourceDetailsType" name="sourceDetails" minOccurs="1" />
+        <element type="sample:Extract" name="ExtractSequence" />
+        <element type="sample:TransformationDetailsType" name="TransformationDetails" minOccurs="0" maxOccurs="unbounded"/>
+      </sequence>
+    </element>
+      <element type="DestinationDetailsType" name="DestinationDetails" minOccurs="1" />
   </complexType>
 </schema>
