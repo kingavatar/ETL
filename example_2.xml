@@ -10,17 +10,18 @@
 			</SQL>
 		</sourceinfo>
 	</sourceDetails>
-	<ExecutionSequence>
+	<Extract>
+	<!-- Change it to extract -->
 		<QueryStm>
 			<Query>select id,salary,location from employee</Query>
-			<!-- select id,salary,location,manager_name from employee,manager where emp.id=masd.id -->
+			<!-- select e.id,e.salary,e.location,m.manager_name from employee e,manager m where e.superid=m.id -->
 			<DstTable>datawarehouse</DstTable>	
 		</QueryStm>
 		<!-- <QueryStm>
 			<Query>select manager_name from manager</Query>
 			<DstTable>datawarehouse</DstTable>
 		</QueryStm> -->
-	</ExecutionSequence>
+	</Extract>
 	<TransformationDetails>
 		<TextTransformation>
 			<sourceAttribute>location</sourceAttribute>
