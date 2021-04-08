@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ETL xmlns ="http://GroupName-017/temporary" >
+	<ET>
 	<sourceDetails>
 		<sourceinfo>
 			<SQL>
@@ -10,18 +11,17 @@
 			</SQL>
 		</sourceinfo>
 	</sourceDetails>
-	<Extract>
+	<ExtractSequence>
 	<!-- Change it to extract -->
-		<QueryStm>
 			<Query>select id,salary,location from employee</Query>
 			<!-- select e.id,e.salary,e.location,m.manager_name from employee e,manager m where e.superid=m.id -->
 			<DstTable>datawarehouse</DstTable>	
-		</QueryStm>
+
 		<!-- <QueryStm>
 			<Query>select manager_name from manager</Query>
 			<DstTable>datawarehouse</DstTable>
 		</QueryStm> -->
-	</Extract>
+	</ExtractSequence>
 	<TransformationDetails>
 		<TextTransformation>
 			<sourceAttribute>location</sourceAttribute>
@@ -45,6 +45,7 @@
 			<destinationAttribute>id_1</destinationAttribute>
 		</NullTransformation>
 	</TransformationDetails>
+	</ET>
 	<DestinationDetails>
 		<DestinationInfo>
 			<name>datawarehouse</name>
