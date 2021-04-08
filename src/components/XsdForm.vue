@@ -1,22 +1,24 @@
 <template>
-  <b-container fluid class="main-form" style="padding:0px;">
-    <b-row>
-      <b-col>
-        <b-button>Back</b-button>
-      </b-col>
-      <b-col>
-        <b-button @click="getXML">Run</b-button>
-      </b-col>
-    </b-row>
-    <XmlElementForm
-      class="shadow"
-      v-bind:key="getJson.schema.element.name"
-      :name="getJson.schema.element.name"
-      :type="getJson.schema.element.type"
-      parentType=""
-      ref="xmlForm"
-      idx=""
-    />
+  <b-container fluid class="main-form" style="padding:0px;" v-if="show">
+    <b-form @submit="getXML">
+      <b-row class="my-4">
+        <b-col>
+          <b-button>Back</b-button>
+        </b-col>
+        <b-col>
+          <b-button type="submit">Run</b-button>
+        </b-col>
+      </b-row>
+      <XmlElementForm
+        class="shadow"
+        v-bind:key="getJson.schema.element.name"
+        :name="getJson.schema.element.name"
+        :type="getJson.schema.element.type"
+        parentType=""
+        ref="xmlForm"
+        idx="0"
+      />
+    </b-form>
   </b-container>
 </template>
 
@@ -30,13 +32,16 @@ export default Vue.extend({
   name: "XsdForm",
   props: { xsdFile: String },
   data() {
-    return {};
+    return {
+      show: true
+    };
   },
   components: { XmlElementForm },
   methods: {
     generateXml(ref, xmlFile) {
       if ("elems" in ref.$refs) {
         xmlFile.push("<" + ref.$props.name + ">");
+        console.log(ref.$refs.elems);
         ref.$refs.elems.forEach(value => {
           this.generateXml(value, xmlFile);
         });
@@ -47,11 +52,25 @@ export default Vue.extend({
         xmlFile.push("</" + ref.$props.name + ">");
       }
     },
-    getXML() {
-      const xmlFile = [];
+    getXML(event) {
+      event.preventDefault();
+      const xmlFile = ['<?xml version="1.0" encoding="utf-8" ?>'];
       this.generateXml(this.$refs.xmlForm, xmlFile);
+      xmlFile[1] =
+        xmlFile[1].slice(0, -1) +
+        ' xmlns ="' +
+        this.getJson.schema.targetNamespace +
+        '" >';
       const xmlString = xmlFile.join("\n");
       console.log(xmlString);
+    },
+    onReset(event) {
+      event.preventDefault();
+      // Trick to reset/clear native browser form validation state
+      this.show = false;
+      this.$nextTick(() => {
+        this.show = true;
+      });
     }
   },
   computed: {
