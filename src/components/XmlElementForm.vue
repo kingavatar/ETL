@@ -163,14 +163,27 @@
       <div v-else-if="choicePresent" class="form">
         <!-- <h3>choice check</h3> -->
         <!-- <h3 v-if="checkSelfMinMax">min max check</h3> -->
-        <!-- <b-row v-if="checkSelfMinMax" align-h="end">
-          <b-button @click="selfDuplicate">plus</b-button>
-        </b-row> -->
-        <!-- <div v-for="(_, index) in selfEle" v-bind:key="index"> -->
+        <b-row v-if="checkMinMax(getType.choice)" align-h="end">
+          <b-button variant="link" @click="selfDuplicate">
+            <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                  class="bi bi-plus"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
+                  />
+                </svg>
+          </b-button>
+        </b-row>
+        <div v-for="(_, index) in selfEle" v-bind:key="index">
         <b-row align-h="center">
           <!-- :id="type + idx" -->
           <!-- :name="'radio-choice' + idx" -->
-          <b-form-radio-group v-model="selectedArray[0]" :required="min !== 0">
+          <b-form-radio-group v-model="selectedArray[index]" :required="min !== 0">
             <b-form-radio
               v-for="choiceItem in getType.choice.element"
               v-bind:key="choiceItem.name + idx"
@@ -178,28 +191,43 @@
               >{{ choiceItem.name }}</b-form-radio
             >
           </b-form-radio-group>
-          <!-- <b-col v-if="index != 0" lg="2">
-              <b-button @click="selfDelete(index)">delete</b-button>
-            </b-col> -->
+          <b-col v-if="index != 0" md="auto">
+              <b-button variant="link" @click="selfDelete(index)">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-trash-fill"
+                  style="margin-top:2px;"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
+                  />
+                </svg>
+              </b-button>
+            </b-col>
+            <b-col v-else md="auto" style="width:72px;height:38px; padding-left:15px; padding-right:15px;" />
         </b-row>
-        <div v-if="Object.keys(selectedArray[0]).length > 0" class="form">
-          <div v-for="item in selectedArray" v-bind:key="item.name">
+        <div v-if="Object.keys(selectedArray[index]).length > 0" class="form">
+          <!-- <div v-for="item in selectedArray" v-bind:key="item.name"> -->
             <XmlElementForm
-              v-bind:key="item.name + idx"
-              :name="item.name"
-              :type="item.type"
+              v-bind:key="selectedArray[index].name + idx"
+              :name="selectedArray[index].name"
+              :type="selectedArray[index].type"
               :parentType="getType.name"
-              :min="item.minOccurs"
-              :max="item.maxOccurs"
+              :min="selectedArray[index].minOccurs"
+              :max="selectedArray[index].maxOccurs"
               ref="elems"
-              :idx="idx"
+              :idx="index"
             />
           </div>
         </div>
         <!-- :complexTypeData="getComplexTypeData" -->
-      </div>
       <!-- </div> -->
       <!-- </b-row> -->
+      </div>
     </b-card>
     <!-- </b-form-group> -->
   </div>
@@ -233,12 +261,12 @@ export default {
     duplicatedElem() {
       this.childEle.push(this.childEleProto);
     },
-    // selfDuplicate() {
-    //   if (this.checkSelfMinMax) {
-    //     this.selfEle.push(0);
-    //     this.selectedArray.push(this.selected);
-    //   }
-    // },
+    selfDuplicate() {
+      // if (this.checkSelfMinMax) {
+        this.selfEle.push(0);
+        this.selectedArray.push(this.selected);
+      // }
+    },
     deleteElem(index) {
       // this.childEle.splice(index, 1);
       this.$delete(this.childEle, index);
@@ -248,10 +276,10 @@ export default {
       temp.id = this.id++;
       this.childEle.splice(index + 1, 0, temp);
     },
-    // selfDelete(index) {
-    //   this.selfEle.splice(index, 1);
-    //   this.selectedArray.splice(index, 1);
-    // },
+    selfDelete(index) {
+      this.selfEle.splice(index, 1);
+      this.selectedArray.splice(index, 1);
+    },
     checkItemIndex(item) {
       return this.childEle.filter(x => x.name === item.name).length;
     },
@@ -303,12 +331,12 @@ export default {
         x => x.name === this.type.replace(/^sample:/, "")
       );
     },
-    checkSelfMinMax() {
-      if (this.min != undefined || this.max != undefined) {
-        return true;
-      }
-      return false;
-    },
+    // checkSelfMinMax() {
+    //   if (this.min != undefined || this.max != undefined) {
+    //     return true;
+    //   }
+    //   return false;
+    // },
     sequencePresent() {
       return Object.prototype.hasOwnProperty.call(this.getType, "sequence");
     },
