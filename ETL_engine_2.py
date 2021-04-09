@@ -26,9 +26,9 @@ class ETLEngine:
             print(e)
         return connection
         
-    def select(self):
+    def select(self,i):
         if(self.isSQL):
-            sql = self.doc.getElementsByTagName("SQL")[0]
+            sql = i.getElementsByTagName("SQL")[0]
             self.usr_db_name = sql.getElementsByTagName("name")[0].firstChild.data
             driver = sql.getElementsByTagName("driver")[0].firstChild.data
             username= sql.getElementsByTagName("username")[0].firstChild.data
@@ -38,8 +38,8 @@ class ETLEngine:
             print("Coming Soon")
 
 
-    def extract(self):
-        exe_seq= self.doc.getElementsByTagName("ExecutionSequence")[0].getElementsByTagName("QueryStm")[0].getElementsByTagName("Query")
+    def extract(self,i):
+        exe_seq= i.getElementsByTagName("ExtractSequence")[0].getElementsByTagName("Query")
         q = []
         for query in exe_seq:
             q.append(query.firstChild.data)
@@ -57,7 +57,7 @@ class ETLEngine:
         protocol = sql.getElementsByTagName("protocol")[0].firstChild.data
         username= sql.getElementsByTagName("username")[0].firstChild.data
         password = sql.getElementsByTagName("password")[0].firstChild.data
-        self.dsttable= self.doc.getElementsByTagName("ExecutionSequence")[0].getElementsByTagName("QueryStm")[0].getElementsByTagName("DstTable")[0].firstChild.data
+        self.dsttable= i.getElementsByTagName("ExtractSequence")[0].getElementsByTagName("DstTable")[0].firstChild.data
         # datawarehouse connection
         self.data_db = self.db_connection("localhost",username,password,self.datawarehouse_db_name)
         self.datawarehouse_cursor = self.data_db.cursor(buffered=True)
@@ -65,10 +65,10 @@ class ETLEngine:
             
 
     
-    def transform(self):
-        Trans_det = self.doc.getElementsByTagName("TransformationDetails")[0].getElementsByTagName("TextTransformation")
-        Arth_det = self.doc.getElementsByTagName("TransformationDetails")[0].getElementsByTagName("ArthimeticTransformation")
-        Null_det = self.doc.getElementsByTagName("TransformationDetails")[0].getElementsByTagName("NullTransformation")
+    def transform(self,i):
+        Trans_det = i.getElementsByTagName("TransformationDetails")[0].getElementsByTagName("TextTransformation")
+        Arth_det = i.getElementsByTagName("TransformationDetails")[0].getElementsByTagName("ArthimeticTransformation")
+        Null_det = i.getElementsByTagName("TransformationDetails")[0].getElementsByTagName("NullTransformation")
         tt=self.text_trans(Trans_det)
         at=self.arth_trans(Arth_det)
         nt=self.null_trans(Null_det)
@@ -108,21 +108,24 @@ class ETLEngine:
  
         
     def run(self):
-        self.select()
-        self.mycursor = self.my_db.cursor(buffered=True)
+        et=self.doc.getElementsByTagName("ET")
+        for i in et:
+            self.select(i)
+            self.mycursor = self.my_db.cursor(buffered=True)
         
-        q = self.extract()
+            q = self.extract(i)
         
-        tt,at=self.transform()
+            tt,at=self.transform(i)
         
-        for qu in tt:
-            self.mycursor.execute(qu)
-        for qu in at:
-            self.mycursor.execute(qu)
-        # print(self.dict)
+            for qu in tt:
+                # print(qu)
+                self.mycursor.execute(qu)
+            for qu in at:
+                self.mycursor.execute(qu)
+            # print(self.dict)
         
-        self.mycursor.execute(q)
-        myresult = self.mycursor
+            self.mycursor.execute(q)
+            myresult = self.mycursor
         # self.datawarehouse_cursor.execute("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = \"datawarehouse\"")
         # col=self.datawarehouse_cursor.fetchall()
         # dw_columns=[]
@@ -130,25 +133,26 @@ class ETLEngine:
         #     for j in i:
         #         dw_columns.append(j)
         # print(dw_columns)
-        insert_1=""
-        values=""
+            insert_1=""
+            values=""
         # for i in dw_columns:
         #     insert_1=insert_1+ i +","
         #     values=values+"%s,"
         # insert_1=insert_1[:-1]
         # values=values[:-1]
-        for i in self.srcColumns:
-            if(i in self.dict):
-                insert_1=insert_1+ self.dict[i] +","
-                values=values+"%s,"
-        insert_1=insert_1[:-1]
-        values=values[:-1]
-        str_query="INSERT INTO {2} ({0}) VALUES ({1}) ".format(insert_1,values,self.dsttable)
+            for i in self.srcColumns:
+                if(i in self.dict):
+                    insert_1=insert_1+ self.dict[i] +","
+                    values=values+"%s,"
+            insert_1=insert_1[:-1]
+            values=values[:-1]
+            str_query="INSERT INTO {2} ({0}) VALUES ({1}) ".format(insert_1,values,self.dsttable)
         # print(str_query)
-        mySql_insert_query = """{0}""".format(str_query)
-        self.datawarehouse_cursor.executemany(mySql_insert_query, myresult)
-        self.data_db.commit()
+            mySql_insert_query = """{0}""".format(str_query)
+            self.datawarehouse_cursor.executemany(mySql_insert_query, myresult)
+            self.data_db.commit()
 
+                   
 
 if __name__ == "__main__" :
     e = ETLEngine("example_2.xml")
