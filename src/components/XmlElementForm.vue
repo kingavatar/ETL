@@ -166,32 +166,35 @@
         <b-row v-if="checkMinMax(getType.choice)" align-h="end">
           <b-button variant="link" @click="selfDuplicate">
             <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="currentColor"
-                  class="bi bi-plus"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
-                  />
-                </svg>
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              class="bi bi-plus"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
+              />
+            </svg>
           </b-button>
         </b-row>
         <div v-for="(_, index) in selfEle" v-bind:key="index">
-        <b-row align-h="center">
-          <!-- :id="type + idx" -->
-          <!-- :name="'radio-choice' + idx" -->
-          <b-form-radio-group v-model="selectedArray[index]" :required="min !== 0">
-            <b-form-radio
-              v-for="choiceItem in getType.choice.element"
-              v-bind:key="choiceItem.name + idx"
-              :value="choiceItem"
-              >{{ choiceItem.name }}</b-form-radio
+          <b-row align-h="center">
+            <!-- :id="type + idx" -->
+            <!-- :name="'radio-choice' + idx" -->
+            <b-form-radio-group
+              v-model="selectedArray[index]"
+              :required="min !== 0"
             >
-          </b-form-radio-group>
-          <b-col v-if="index != 0" md="auto">
+              <b-form-radio
+                v-for="choiceItem in getType.choice.element"
+                v-bind:key="choiceItem.name + idx"
+                :value="choiceItem"
+                >{{ choiceItem.name }}</b-form-radio
+              >
+            </b-form-radio-group>
+            <b-col v-if="index != 0" md="auto">
               <b-button variant="link" @click="selfDelete(index)">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -208,10 +211,14 @@
                 </svg>
               </b-button>
             </b-col>
-            <b-col v-else md="auto" style="width:72px;height:38px; padding-left:15px; padding-right:15px;" />
-        </b-row>
-        <div v-if="Object.keys(selectedArray[index]).length > 0" class="form">
-          <!-- <div v-for="item in selectedArray" v-bind:key="item.name"> -->
+            <b-col
+              v-else
+              md="auto"
+              style="width:72px;height:38px; padding-left:15px; padding-right:15px;"
+            />
+          </b-row>
+          <div v-if="Object.keys(selectedArray[index]).length > 0" class="form">
+            <!-- <div v-for="item in selectedArray" v-bind:key="item.name"> -->
             <XmlElementForm
               v-bind:key="selectedArray[index].name + idx"
               :name="selectedArray[index].name"
@@ -225,8 +232,8 @@
           </div>
         </div>
         <!-- :complexTypeData="getComplexTypeData" -->
-      <!-- </div> -->
-      <!-- </b-row> -->
+        <!-- </div> -->
+        <!-- </b-row> -->
       </div>
     </b-card>
     <!-- </b-form-group> -->
@@ -263,8 +270,8 @@ export default {
     },
     selfDuplicate() {
       // if (this.checkSelfMinMax) {
-        this.selfEle.push(0);
-        this.selectedArray.push(this.selected);
+      this.selfEle.push(0);
+      this.selectedArray.push(this.selected);
       // }
     },
     deleteElem(index) {
