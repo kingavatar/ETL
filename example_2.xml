@@ -12,15 +12,9 @@
 		</sourceinfo>
 	</sourceDetails>
 	<ExtractSequence>
-	<!-- Change it to extract -->
 			<Query>select id,salary,location from employee</Query>
 			<!-- select e.id,e.salary,e.location,m.manager_name from employee e,manager m where e.superid=m.id -->
 			<DstTable>datawarehouse</DstTable>	
-
-		<!-- <QueryStm>
-			<Query>select manager_name from manager</Query>
-			<DstTable>datawarehouse</DstTable>
-		</QueryStm> -->
 	</ExtractSequence>
 	<TransformationDetails>
 		<TextTransformation>
@@ -34,6 +28,52 @@
 			<destinationAttribute>location_1</destinationAttribute>
 			<sourcePattern>Bezawada</sourcePattern>
 			<destinationPattern>Vijayawada</destinationPattern>
+		</TextTransformation>
+		<ArthimeticTransformation>
+			<sourceAttribute>salary</sourceAttribute>
+			<destinationAttribute>salary_1</destinationAttribute>
+			<arthimeticFormulae>salary/75</arthimeticFormulae>
+		</ArthimeticTransformation>
+		<NullTransformation>
+			<sourceAttribute>id</sourceAttribute>
+			<destinationAttribute>id_1</destinationAttribute>
+		</NullTransformation>
+	</TransformationDetails>
+	</ET>
+	<ET>
+	<sourceDetails>
+		<sourceinfo>
+			<SQL>
+				<name>employee</name>
+				<driver>org.mysql</driver>
+				<username>osurihimeshkrishna</username>
+				<password>password</password>
+			</SQL>
+		</sourceinfo>
+	</sourceDetails>
+	<ExtractSequence>
+			<Query>select id,salary,location from employee</Query>
+			<!-- select e.id,e.salary,e.location,m.manager_name from employee e,manager m where e.superid=m.id -->
+			<DstTable>datawarehouse</DstTable>	
+	</ExtractSequence>
+	<TransformationDetails>
+		<TextTransformation>
+			<sourceAttribute>location</sourceAttribute>
+			<destinationAttribute>location_1</destinationAttribute>
+			<sourcePattern>Bengaluru</sourcePattern>
+			<destinationPattern>Bangalore</destinationPattern>
+		</TextTransformation>
+		<TextTransformation>
+			<sourceAttribute>location</sourceAttribute>
+			<destinationAttribute>location_1</destinationAttribute>
+			<sourcePattern>Bezawada</sourcePattern>
+			<destinationPattern>Vijayawada</destinationPattern>
+		</TextTransformation>
+		<TextTransformation>
+			<sourceAttribute>location</sourceAttribute>
+			<destinationAttribute>location_1</destinationAttribute>
+			<sourcePattern>Madras</sourcePattern>
+			<destinationPattern>Chennai</destinationPattern>
 		</TextTransformation>
 		<ArthimeticTransformation>
 			<sourceAttribute>salary</sourceAttribute>
