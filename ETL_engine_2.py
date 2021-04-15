@@ -44,6 +44,7 @@ class ETLEngine:
         for query in exe_seq:
             q.append(query.firstChild.data)
         #extracting table,columns from query
+        # self.mycursor.execute("CREATE table query(val int);")
         self.mycursor.execute("DROP table query;")
         upd_query="CREATE table query as "+q[0]+";"
         self.mycursor.execute(upd_query)
