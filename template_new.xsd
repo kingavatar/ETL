@@ -99,7 +99,7 @@
     <sequence>
       <element type="sample:sourceDetailsType" name="sourceDetails" minOccurs="1" />
       <element type="sample:Extract" name="ExtractSequence" />
-      <element type="sample:TransformationDetailsType" name="TransformationDetails" minOccurs="0" maxOccurs="unbounded"/>
+      <element type="sample:TransformationDetailsType" name="TransformationDetails" />
     </sequence>
   </complexType>
 
