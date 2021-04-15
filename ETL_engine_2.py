@@ -44,10 +44,21 @@ class ETLEngine:
         for query in exe_seq:
             q.append(query.firstChild.data)
         #extracting table,columns from query
-        for qu in q:
-            self.table = re.search('(?<=from )(\w+)', qu).group(1)
-            from_str = re.search('(?<=select )(.*)(?=from)', qu).group(1)
-            self.srcColumns = [x.strip() for x in from_str.split(',')]
+        self.mycursor.execute("DROP table query;")
+        upd_query="CREATE table query as "+q[0]+";"
+        self.mycursor.execute(upd_query)
+        self.mycursor.execute("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = \"query\"")
+        col=self.mycursor.fetchall()
+        self.srcColumns=[]
+        for i1 in col:
+            for j in i1:
+                self.srcColumns.append(j)
+        # print(self.srcColumns)
+        self.table= "query";
+        # for qu in q:
+        #     self.table = re.search('(?<=from )(\w+)', qu).group(1)
+        #     from_str = re.search('(?<=select )(.*)(?=from)', qu).group(1)
+        #     self.srcColumns = [x.strip() for x in from_str.split(',')]
         
         
         #extracting destination details    
@@ -112,7 +123,7 @@ class ETLEngine:
         for i in et:
             self.select(i)
             self.mycursor = self.my_db.cursor(buffered=True)
-        
+
             q = self.extract(i)
         
             tt,at=self.transform(i)
@@ -124,8 +135,11 @@ class ETLEngine:
                 self.mycursor.execute(qu)
             # print(self.dict)
         
-            self.mycursor.execute(q)
+            self.mycursor.execute("select * from query")
+            self.my_db.commit()
             myresult = self.mycursor
+            
+            # i=input()
         # self.datawarehouse_cursor.execute("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = \"datawarehouse\"")
         # col=self.datawarehouse_cursor.fetchall()
         # dw_columns=[]
@@ -146,9 +160,12 @@ class ETLEngine:
                     values=values+"%s,"
             insert_1=insert_1[:-1]
             values=values[:-1]
+            # print(insert_1)
+            # print(values)
             str_query="INSERT INTO {2} ({0}) VALUES ({1}) ".format(insert_1,values,self.dsttable)
-        # print(str_query)
+            
             mySql_insert_query = """{0}""".format(str_query)
+            
             self.datawarehouse_cursor.executemany(mySql_insert_query, myresult)
             self.data_db.commit()
 

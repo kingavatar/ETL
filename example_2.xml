@@ -52,9 +52,10 @@
 		</sourceinfo>
 	</sourceDetails>
 	<ExtractSequence>
-			<Query>select id,salary,location from employee</Query>
+			<!-- <Query>select id,salary,location from employee</Query> -->
+			<Query>select e.id,e.salary,e.location,m.name from employee e,manager m where e.id=m.super_id </Query>
 			<!-- select e.id,e.salary,e.location,m.manager_name from employee e,manager m where e.superid=m.id -->
-			<DstTable>datawarehouse</DstTable>	
+			<DstTable>datawarehouse1</DstTable>	
 	</ExtractSequence>
 	<TransformationDetails>
 		<TextTransformation>
@@ -83,6 +84,10 @@
 		<NullTransformation>
 			<sourceAttribute>id</sourceAttribute>
 			<destinationAttribute>id_1</destinationAttribute>
+		</NullTransformation>
+		<NullTransformation>
+			<sourceAttribute>name</sourceAttribute>
+			<destinationAttribute>name_1</destinationAttribute>
 		</NullTransformation>
 	</TransformationDetails>
 	</ET>
