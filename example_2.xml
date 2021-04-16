@@ -6,8 +6,8 @@
 			<SQL>
 				<name>employee</name>
 				<driver>org.mysql</driver>
-				<username>osurihimeshkrishna</username>
-				<password>password</password>
+				<username>saikiran</username>
+				<password>pass123</password>
 			</SQL>
 		</sourceinfo>
 	</sourceDetails>
@@ -50,8 +50,8 @@
 			<SQL>
 				<name>employee</name>
 				<driver>org.mysql</driver>
-				<username>osurihimeshkrishna</username>
-				<password>password</password>
+				<username>saikiran</username>
+				<password>pass123</password>
 			</SQL>
 		</sourceinfo>
 	</sourceDetails>
@@ -100,8 +100,8 @@
 			<name>datawarehouse</name>
 			<driver>org.mysql</driver>
 			<protocol>SQl</protocol>
-			<username>osurihimeshkrishna</username>
-			<password>password</password>
+			<username>saikiran</username>
+			<password>pass123</password>
 		</DestinationInfo>
 	</DestinationDetails>
 </ETL>
