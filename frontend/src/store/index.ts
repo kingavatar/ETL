@@ -16,9 +16,33 @@ import {
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {}
+export default new Vuex.Store<RootState>({
+  state: { complexTypeData: jsonObj.schema.complexType ,xmlFile:""},
+  mutations: {
+    addComplexTypeData(state, data) {
+      state.complexTypeData.push(data);
+    },
+    addXmlFile(state,data){
+      state.xmlFile=data;
+    }
+  },
+  actions: {
+    addXmlFile({commit,state},data){
+      commit("addXmlFile",data);
+      axios({
+        method:'post',
+        url:"http://localhost:5000/api/xmlFile",
+        data:data,
+        headers: { "Content-Type": "text/plain" },
+      });
+    }
+  },
+  modules: {},
+  getters: {
+    type: state => (type: string) => {
+      return state.complexTypeData.find(
+        x => x.name === type.replace(/^sample:/, "")
+      );
+    }
+  }
 });
