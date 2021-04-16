@@ -138,7 +138,7 @@ class ETLEngine:
         
             self.mycursor.execute("select * from query")
             self.my_db.commit()
-            myresult = self.mycursor
+            myresult = self.mycursor.fetchall()
             
             # i=input()
         # self.datawarehouse_cursor.execute("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = \"datawarehouse\"")
@@ -166,7 +166,7 @@ class ETLEngine:
             str_query="INSERT INTO {2} ({0}) VALUES ({1}) ".format(insert_1,values,self.dsttable)
             
             mySql_insert_query = """{0}""".format(str_query)
-            
+            print(myresult)
             self.datawarehouse_cursor.executemany(mySql_insert_query, myresult)
             self.data_db.commit()
 
