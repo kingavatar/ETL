@@ -42,7 +42,8 @@ export default new Vuex.Store<RootState>({
       axios({
         method:'post',
         url:"http://localhost:5000/api/xmlFile",
-        data:data
+        data:data,
+        headers: { "Content-Type": "text/plain" },
       });
     }
   },
