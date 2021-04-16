@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request, make_response
 from flask_cors import CORS
 import os, requests
 
@@ -25,6 +25,12 @@ def index_html(path):
     #     return requests.get('http://localhost:8080/{}'.format(path)).text
     return render_template('index.html')
 
+@app.route("/api/xmlFile",methods=['POST'])
+def XmlFile():
+    if request.method == 'POST':
+      data=request.data
+      print(data)
+      return make_response("success")
 
 if __name__ == '__main__':
     app.run("0.0.0.0")
