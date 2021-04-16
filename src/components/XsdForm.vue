@@ -41,7 +41,7 @@ export default Vue.extend({
     generateXml(ref, xmlFile) {
       if ("elems" in ref.$refs) {
         xmlFile.push("<" + ref.$props.name + ">");
-        console.log(ref.$refs.elems);
+        // console.log(ref.$refs.elems);
         ref.$refs.elems.forEach(value => {
           this.generateXml(value, xmlFile);
         });
@@ -50,6 +50,7 @@ export default Vue.extend({
         xmlFile.push("<" + ref.$props.name + ">");
         xmlFile.push(ref.formValue);
         xmlFile.push("</" + ref.$props.name + ">");
+       
       }
     },
     getXML(event) {
@@ -62,7 +63,7 @@ export default Vue.extend({
         this.getJson.schema.targetNamespace +
         '" >';
       const xmlString = xmlFile.join("\n");
-      console.log(xmlString);
+      this.$store.dispatch("addXmlFile",xmlString);
     },
     onReset(event) {
       event.preventDefault();

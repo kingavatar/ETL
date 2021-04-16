@@ -23,4 +23,5 @@ export interface XmlComplexType {
 export type XmlComplexTypes = XmlComplexType[];
 export interface RootState {
   complexTypeData: XmlComplexTypes;
+  xmlFile:string;
 }

@@ -2,6 +2,8 @@ import Vue from "vue";
 import Vuex from "vuex";
 import xmlData from "!!raw-loader!@/assets/template.xsd";
 import parser from "fast-xml-parser";
+import axios from "axios";
+
 import {
   RootState
   // ,
@@ -25,13 +27,25 @@ const options = {
 const jsonObj = parser.parse(xmlData, options);
 
 export default new Vuex.Store<RootState>({
-  state: { complexTypeData: jsonObj.schema.complexType },
+  state: { complexTypeData: jsonObj.schema.complexType ,xmlFile:""},
   mutations: {
     addComplexTypeData(state, data) {
       state.complexTypeData.push(data);
+    },
+    addXmlFile(state,data){
+      state.xmlFile=data;
     }
   },
-  actions: {},
+  actions: {
+    addXmlFile({commit,state},data){
+      commit("addXmlFile",data);
+      axios({
+        method:'post',
+        url:"http://localhost:5000/api/xmlFile",
+        data:data
+      });
+    }
+  },
   modules: {},
   getters: {
     type: state => (type: string) => {
