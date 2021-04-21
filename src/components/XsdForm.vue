@@ -47,9 +47,9 @@ export default Vue.extend({
         });
         xmlFile.push("</" + ref.$props.name + ">");
       } else if ("formInput" in ref.$refs) {
-        xmlFile.push("<" + ref.$props.name + ">");
-        xmlFile.push(ref.formValue);
-        xmlFile.push("</" + ref.$props.name + ">");
+        xmlFile.push("<" + ref.$props.name + ">"+ref.formValue+"</" + ref.$props.name + ">");
+        // xmlFile.push(ref.formValue);
+        // xmlFile.push("</" + ref.$props.name + ">");
        
       }
     },
