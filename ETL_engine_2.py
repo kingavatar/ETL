@@ -120,24 +120,51 @@ class ETLEngine:
  
         
     def run(self):
-        et=self.doc.getElementsByTagName("ET")
+        try :
+            et=self.doc.getElementsByTagName("ET")
+        except:
+            return "problem with ET","ERROR"
         for i in et:
-            self.select(i)
-            self.mycursor = self.my_db.cursor(buffered=True)
-
-            q = self.extract(i)
+            try:
+                self.select(i)
+            except:
+                return "prblem with select","ERROR"
+            try:
+                self.mycursor = self.my_db.cursor(buffered=True)
+            except:
+                return "problem with mycursor","ERROR"
+            try:
+                q = self.extract(i)
+            except:
+                return "problem with extraction","ERROR"
         
-            tt,at=self.transform(i)
+            try:
+                tt,at=self.transform(i)
+            except:
+                return "problem with transform","ERROR"
         
             for qu in tt:
                 # print(qu)
-                self.mycursor.execute(qu)
+                try:
+                    self.mycursor.execute(qu)
+                except:
+                    return "problem with text tranform execute","ERROR"
             for qu in at:
-                self.mycursor.execute(qu)
+                try:
+                    self.mycursor.execute(qu)
+                except:
+                    return "problem with arthimetic transform execute","ERROR"
             # print(self.dict)
-            self.mycursor.execute("select * from query")
-            self.my_db.commit()
-            myresult = self.mycursor.fetchall()
+            try:
+                self.mycursor.execute("select * from query")
+            except:
+                return "Last execute query","ERROR"
+            
+            try:
+                self.my_db.commit()
+                myresult = self.mycursor.fetchall()
+            except:
+                return "db commit error","ERROR"
             
             # i=input()
         # self.datawarehouse_cursor.execute("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = \"datawarehouse\"")
@@ -154,21 +181,29 @@ class ETLEngine:
         #     values=values+"%s,"
         # insert_1=insert_1[:-1]
         # values=values[:-1]
-            for i in self.srcColumns:
-                if(i in self.dict):
-                    insert_1=insert_1+ self.dict[i] +","
-                    values=values+"%s,"
-            insert_1=insert_1[:-1]
-            values=values[:-1]
+            try:
+                for i in self.srcColumns:
+                    if(i in self.dict):
+                        insert_1=insert_1+ self.dict[i] +","
+                        values=values+"%s,"
+                insert_1=insert_1[:-1]
+                values=values[:-1]
+            except:
+                return "problem with srcColumns","ERROR"
             # print(insert_1)
             # print(values)
-            str_query="INSERT INTO {2} ({0}) VALUES ({1}) ".format(insert_1,values,self.dsttable)
-            
+            try:
+                str_query="INSERT INTO {2} ({0}) VALUES ({1}) ".format(insert_1,values,self.dsttable)
+            except:
+                return "problem with str_query","ERROR"
             mySql_insert_query = """{0}""".format(str_query)
             # print(myresult)
-            self.datawarehouse_cursor.executemany(mySql_insert_query, myresult)
-            self.data_db.commit()
-
+            try:
+                self.datawarehouse_cursor.executemany(mySql_insert_query, myresult)
+                self.data_db.commit()
+            except:
+                return "datawarehouse execute error","ERROR"
+            return "","SUCCESS"
                    
 
 if __name__ == "__main__" :
