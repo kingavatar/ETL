@@ -6,13 +6,8 @@
 			<SQL>
 				<name>employee</name>
 				<driver>org.mysql</driver>
-<<<<<<< HEAD
-				<username>saikiran</username>
-				<password>pass123</password>
-=======
 				<username>osurihimeshkrishna</username>
 				<password>password</password>
->>>>>>> de5d981 (Changes to db_2.sql)
 			</SQL>
 		</sourceinfo>
 	</sourceDetails>
@@ -55,13 +50,9 @@
 			<SQL>
 				<name>employee</name>
 				<driver>org.mysql</driver>
-<<<<<<< HEAD
-				<username>saikiran</username>
-				<password>pass123</password>
-=======
 				<username>osurihimeshkrishna</username>
 				<password>password</password>
->>>>>>> de5d981 (Changes to db_2.sql)
+
 			</SQL>
 		</sourceinfo>
 	</sourceDetails>
@@ -110,13 +101,8 @@
 			<name>datawarehouse</name>
 			<driver>org.mysql</driver>
 			<protocol>SQl</protocol>
-<<<<<<< HEAD
-			<username>saikiran</username>
-			<password>pass123</password>
-=======
 			<username>osurihimeshkrishna</username>
 			<password>password</password>
->>>>>>> de5d981 (Changes to db_2.sql)
 		</DestinationInfo>
 	</DestinationDetails>
 </ETL>
