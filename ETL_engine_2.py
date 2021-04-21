@@ -135,7 +135,6 @@ class ETLEngine:
             for qu in at:
                 self.mycursor.execute(qu)
             # print(self.dict)
-        
             self.mycursor.execute("select * from query")
             self.my_db.commit()
             myresult = self.mycursor.fetchall()
@@ -166,7 +165,7 @@ class ETLEngine:
             str_query="INSERT INTO {2} ({0}) VALUES ({1}) ".format(insert_1,values,self.dsttable)
             
             mySql_insert_query = """{0}""".format(str_query)
-            print(myresult)
+            # print(myresult)
             self.datawarehouse_cursor.executemany(mySql_insert_query, myresult)
             self.data_db.commit()
 

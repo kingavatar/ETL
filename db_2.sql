@@ -14,6 +14,7 @@ create table query(id int);
 
 
 drop database datawarehouse;
+create database datawarehouse;
 use datawarehouse;
 create table datawarehouse(id_1 int,salary_1 float,location_1 varchar(255));
 create table datawarehouse1(id_1 int,salary_1 float,location_1 varchar(255),name_1 varchar(255));
