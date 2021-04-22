@@ -38,6 +38,10 @@
 			<sourceAttribute>id</sourceAttribute>
 			<destinationAttribute>id_1</destinationAttribute>
 		</NullTransformation>
+		<!-- <NullTransformation>
+			<sourceAttribute>manager</sourceAttribute>
+			<destinationAttribute>manager_1</destinationAttribute>
+		</NullTransformation> -->
 	</TransformationDetails>
 	</ET>
 	<ET>
