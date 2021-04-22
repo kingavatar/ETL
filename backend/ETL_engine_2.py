@@ -169,8 +169,7 @@ class ETLEngine:
             print(myresult)
             self.datawarehouse_cursor.executemany(mySql_insert_query, myresult)
             self.data_db.commit()
-
-                   
+            return "","Success"
 
 if __name__ == "__main__" :
     e = ETLEngine("example_2.xml")
