@@ -31,12 +31,6 @@
 <sourceAttribute>id</sourceAttribute>
 <destinationAttribute>id_1</destinationAttribute>
 </NullTransformation>
-<TextTransformation>
-  <sourceAttribute>location</sourceAttribute>
-  <destinationAttribute>location_1</destinationAttribute>
-  <sourcePattern>Bezawada</sourcePattern>
-  <destinationPattern>Vijayawada</destinationPattern>
-</TextTransformation>
 </TransformationDetails>
 </ET>
 <DestinationDetails>
