@@ -6,6 +6,9 @@
           <b-button>Back</b-button>
         </b-col>
         <b-col>
+          <b-button @click="makeToast('info')">Toast</b-button>
+        </b-col>
+        <b-col>
           <b-button type="submit">Run</b-button>
         </b-col>
       </b-row>
@@ -26,7 +29,7 @@
 import parser from "fast-xml-parser";
 import { mapState } from "vuex";
 import XmlElementForm from "@/components/XmlElementForm.vue";
-
+import axios from "axios";
 import Vue from "vue";
 export default Vue.extend({
   name: "XsdForm",
@@ -37,6 +40,15 @@ export default Vue.extend({
     };
   },
   components: { XmlElementForm },
+  sockets: {
+    toast: function(data) {
+      this.$bvToast.toast(data.msg, {
+        title: `Message ${data.type}`,
+        variant: data.type,
+        solid: true
+      });
+    }
+  },
   methods: {
     generateXml(ref, xmlFile) {
       if ("elems" in ref.$refs) {
@@ -47,10 +59,17 @@ export default Vue.extend({
         });
         xmlFile.push("</" + ref.$props.name + ">");
       } else if ("formInput" in ref.$refs) {
-        xmlFile.push("<" + ref.$props.name + ">"+ref.formValue+"</" + ref.$props.name + ">");
+        xmlFile.push(
+          "<" +
+            ref.$props.name +
+            ">" +
+            ref.formValue +
+            "</" +
+            ref.$props.name +
+            ">"
+        );
         // xmlFile.push(ref.formValue);
         // xmlFile.push("</" + ref.$props.name + ">");
-       
       }
     },
     getXML(event) {
@@ -63,7 +82,7 @@ export default Vue.extend({
         this.getJson.schema.targetNamespace +
         '" >';
       const xmlString = xmlFile.join("\n");
-      this.$store.dispatch("addXmlFile",xmlString);
+      this.$store.dispatch("addXmlFile", xmlString);
     },
     onReset(event) {
       event.preventDefault();
@@ -72,6 +91,9 @@ export default Vue.extend({
       this.$nextTick(() => {
         this.show = true;
       });
+    },
+    makeToast() {
+      axios("http://localhost:5000/api/toast");
     }
   },
   computed: {

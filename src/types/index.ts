@@ -23,5 +23,7 @@ export interface XmlComplexType {
 export type XmlComplexTypes = XmlComplexType[];
 export interface RootState {
   complexTypeData: XmlComplexTypes;
-  xmlFile:string;
+  xmlFile: string;
+  isConnected: boolean;
+  socketMessage: string;
 }

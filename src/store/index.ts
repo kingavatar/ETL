@@ -27,23 +27,39 @@ const options = {
 const jsonObj = parser.parse(xmlData, options);
 
 export default new Vuex.Store<RootState>({
-  state: { complexTypeData: jsonObj.schema.complexType ,xmlFile:""},
+  state: {
+    complexTypeData: jsonObj.schema.complexType,
+    xmlFile: "",
+    isConnected: false,
+    socketMessage: ""
+  },
   mutations: {
     addComplexTypeData(state, data) {
       state.complexTypeData.push(data);
     },
-    addXmlFile(state,data){
-      state.xmlFile=data;
+    addXmlFile(state, data) {
+      state.xmlFile = data;
+    },
+    SOCKET_CONNECT(state) {
+      state.isConnected = true;
+    },
+
+    SOCKET_DISCONNECT(state) {
+      state.isConnected = false;
+    },
+
+    SOCKET_MESSAGECHANNEL(state, message) {
+      state.socketMessage = message;
     }
   },
   actions: {
-    addXmlFile({commit,state},data){
-      commit("addXmlFile",data);
+    addXmlFile({ commit, state }, data) {
+      commit("addXmlFile", data);
       axios({
-        method:'post',
-        url:"http://localhost:5000/api/xmlFile",
-        data:data,
-        headers: { "Content-Type": "text/plain" },
+        method: "post",
+        url: "http://localhost:5000/api/xmlFile",
+        data: data,
+        headers: { "Content-Type": "text/plain" }
       });
     }
   },
