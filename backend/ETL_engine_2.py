@@ -2,8 +2,11 @@ import xml.dom.minidom as dompar
 import mysql.connector as mysql
 import sql_metadata, re
 import pandas as pd
+
+
+
 class ETLEngine:
-    def __init__(self,xmlFile):
+    def __init__(self,xmlFile,socketio):
         self.dict={}
         self.srcColumns=[]
         self.doc = dompar.parse(xmlFile)
@@ -11,7 +14,9 @@ class ETLEngine:
         ftp = self.doc.getElementsByTagName("FTP")
         self.isSQL=(ftp==[]) and (sql != [])
         self.isFTP=(ftp!=[]) and (sql == [])
-
+        self.socketio=socketio
+    def Toast(self,msg="Sending Toast from Server",type="success"):
+        self.socketio.emit('toast', {'msg':msg,'type':type})
     def db_connection(self,hostname,username,password,db):
         connection = None
         try:
@@ -123,10 +128,12 @@ class ETLEngine:
         et=self.doc.getElementsByTagName("ET")
         for i in et:
             self.select(i)
+            self.Toast("Source OLTP Access Confirmed","info")
             self.mycursor = self.my_db.cursor(buffered=True)
 
             q = self.extract(i)
-        
+            self.Toast("Extraction Done","info")
+
             tt,at=self.transform(i)
         
             for qu in tt:
@@ -135,10 +142,11 @@ class ETLEngine:
             for qu in at:
                 self.mycursor.execute(qu)
             # print(self.dict)
-        
+
             self.mycursor.execute("select * from query")
             self.my_db.commit()
             myresult = self.mycursor.fetchall()
+            self.Toast("Tranformation Done","info")
             
             # i=input()
         # self.datawarehouse_cursor.execute("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = \"datawarehouse\"")
@@ -169,7 +177,9 @@ class ETLEngine:
             print(myresult)
             self.datawarehouse_cursor.executemany(mySql_insert_query, myresult)
             self.data_db.commit()
-            return "","Success"
+            self.Toast("Loading into Datawarehouse Done","info")
+
+            # return "","Success"
 
 if __name__ == "__main__" :
     e = ETLEngine("example_2.xml")
