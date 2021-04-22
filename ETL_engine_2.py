@@ -150,7 +150,7 @@ class ETLEngine:
                 try:
                     self.mycursor.execute(qu)
                 except:
-                    return "problem with text tranform execute","ERROR"
+                    return "text tranform is given which is not present in the select statement","ERROR"
                     # print("Problem with transform execute")
                     #if a new mapping is given which is not present in the select statement this will show an error
                     # return "problem with text tranform execute","ERROR"
@@ -158,7 +158,7 @@ class ETLEngine:
                 try:
                     self.mycursor.execute(qu)
                 except:
-                    return "problem with arthimetic transform execute","ERROR"
+                    return "arth tranform is given which is not present in the select statement","ERROR"
             # print(self.dict)
             try:
                 self.mycursor.execute("select * from query")
@@ -211,7 +211,7 @@ class ETLEngine:
                 self.datawarehouse_cursor.executemany(mySql_insert_query, myresult)
                 self.data_db.commit()
             except:
-                return "datawarehouse execute error","ERROR"
+                return "Please mention tranformations for each attribute selected","ERROR"
                 # print("There maybe some parameter with no transformation")
                 
             # print("Success")
