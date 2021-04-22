@@ -128,7 +128,7 @@ class ETLEngine:
             try:
                 self.select(i)
             except:
-                return "prblem with select","ERROR"
+                return "problem with select","ERROR"
             try:
                 self.mycursor = self.my_db.cursor(buffered=True)
             except:
@@ -142,6 +142,8 @@ class ETLEngine:
                 tt,at=self.transform(i)
             except:
                 return "problem with transform","ERROR"
+                # print("problem with transform")
+                # return "problem with transform","ERROR"
         
             for qu in tt:
                 # print(qu)
@@ -149,6 +151,9 @@ class ETLEngine:
                     self.mycursor.execute(qu)
                 except:
                     return "problem with text tranform execute","ERROR"
+                    # print("Problem with transform execute")
+                    #if a new mapping is given which is not present in the select statement this will show an error
+                    # return "problem with text tranform execute","ERROR"
             for qu in at:
                 try:
                     self.mycursor.execute(qu)
@@ -190,12 +195,16 @@ class ETLEngine:
                 values=values[:-1]
             except:
                 return "problem with srcColumns","ERROR"
+                # print("ERROR with srcColumns")
+                
             # print(insert_1)
             # print(values)
             try:
                 str_query="INSERT INTO {2} ({0}) VALUES ({1}) ".format(insert_1,values,self.dsttable)
             except:
                 return "problem with str_query","ERROR"
+                # print("There maybe some parameter with no transformation")
+                
             mySql_insert_query = """{0}""".format(str_query)
             # print(myresult)
             try:
@@ -203,7 +212,10 @@ class ETLEngine:
                 self.data_db.commit()
             except:
                 return "datawarehouse execute error","ERROR"
-            return "","SUCCESS"
+                # print("There maybe some parameter with no transformation")
+                
+            # print("Success")
+        return "","SUCCESS"
                    
 
 if __name__ == "__main__" :
