@@ -127,9 +127,14 @@ class ETLEngine:
     def run(self):
         et=self.doc.getElementsByTagName("ET")
         for i in et:
-            self.select(i)
-            self.Toast("Source OLTP Access Confirmed","info")
-            self.mycursor = self.my_db.cursor(buffered=True)
+            try:
+              self.select(i)
+              self.mycursor = self.my_db.cursor(buffered=True)
+            except:
+              self.Toast("Source OLTP Details are Incorrect","danger")
+              return "Operation Failed due to Incorrect Source Details","danger"
+            else:
+              self.Toast("Source OLTP Access Confirmed","info")
 
             q = self.extract(i)
             self.Toast("Extraction Done","info")
@@ -178,7 +183,7 @@ class ETLEngine:
             self.datawarehouse_cursor.executemany(mySql_insert_query, myresult)
             self.data_db.commit()
             self.Toast("Loading into Datawarehouse Done","info")
-
+            return "Operation Succeded","success"
             # return "","Success"
 
 if __name__ == "__main__" :
