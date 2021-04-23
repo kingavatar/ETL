@@ -53,7 +53,8 @@ class ETLEngine:
         self.mycursor.execute("DROP table query;")
         upd_query="CREATE table query as "+q[0]+";"
         self.mycursor.execute(upd_query)
-        self.mycursor.execute("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = \"query\"")
+        stm="SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = \"query\" and TABLE_SCHEMA=\"{0}\"".format(self.usr_db_name)
+        self.mycursor.execute(stm)
         col=self.mycursor.fetchall()
         self.srcColumns=[]
         for i1 in col:
@@ -61,12 +62,13 @@ class ETLEngine:
                 self.srcColumns.append(j)
         # print(self.srcColumns)
         self.table= "query";
+        return q[0]
         # for qu in q:
         #     self.table = re.search('(?<=from )(\w+)', qu).group(1)
         #     from_str = re.search('(?<=select )(.*)(?=from)', qu).group(1)
         #     self.srcColumns = [x.strip() for x in from_str.split(',')]
         
-        
+    def destination_load(self,i):  
         #extracting destination details    
         sql= self.doc.getElementsByTagName("DestinationDetails")[0].getElementsByTagName("DestinationInfo")[0]
         self.datawarehouse_db_name = sql.getElementsByTagName("name")[0].firstChild.data
@@ -78,7 +80,7 @@ class ETLEngine:
         # datawarehouse connection
         self.data_db = self.db_connection("localhost",username,password,self.datawarehouse_db_name)
         self.datawarehouse_cursor = self.data_db.cursor(buffered=True)
-        return q[0]
+        
             
 
     
@@ -138,6 +140,13 @@ class ETLEngine:
 
             q = self.extract(i)
             self.Toast("Extraction Done","info")
+            try:
+                self.destination_load(i)
+            except:
+                self.Toast("Destination Details are Incorrect","danger")
+                return "Operation Failed due to Incorrect Destination Details","danger"
+            else:
+                self.Toast("Destination Warehouse Access Confirmed","info")
 
             tt,at=self.transform(i)
         
@@ -179,8 +188,11 @@ class ETLEngine:
             str_query="INSERT INTO {2} ({0}) VALUES ({1}) ".format(insert_1,values,self.dsttable)
             
             mySql_insert_query = """{0}""".format(str_query)
+            # myresult_list=myresult.fetchall()
+            # print(myresult_list)
+            print(mySql_insert_query)
             print(myresult)
-            self.datawarehouse_cursor.executemany(mySql_insert_query, myresult)
+            self.datawarehouse_cursor.executemany(mySql_insert_query,myresult)
             self.data_db.commit()
             self.Toast("Loading into Datawarehouse Done","info")
             return "Operation Succeded","success"
