@@ -225,7 +225,7 @@ class ETLEngine:
                 # return "problem with transform","ERROR"
         
             for qu in tt:
-                # print(qu)
+                print(qu)
                 try:
                     self.mycursor.execute(qu)
                 except:
@@ -300,5 +300,5 @@ class ETLEngine:
                    
 
 if __name__ == "__main__" :
-    e = ETLEngine("example_ftp.xml")
+    e = ETLEngine("example_2.xml")
     print(e.run())

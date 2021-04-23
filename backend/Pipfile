@@ -11,6 +11,7 @@ mysql-connector-python = "*"
 pandas = "*"
 sql-metadata = "*"
 flask-socketio = "*"
+pyftpdlib = "*"
 
 [dev-packages]
 

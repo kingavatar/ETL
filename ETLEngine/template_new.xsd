@@ -41,8 +41,9 @@
 
   <complexType name="Extract">
     <sequence >
-      <element type="string" name="Query" maxOccurs="1" minOccurs="1" />
-      <element type="string" name="DstTable" maxOccurs="1" minOccurs="1" />
+<element type="string" name="Query" />
+<element type="string" name="DstTable" />
+
     </sequence>
   </complexType>
 

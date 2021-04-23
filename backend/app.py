@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, render_template, request, make_response
-from flask.helpers import flash
+# from flask.helpers import flash
 from flask_cors import CORS
 import os, requests
 from ETL_engine_2 import ETLEngine
@@ -41,7 +41,7 @@ socketio.init_app(app, cors_allowed_origins="*")
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def index_html(path):
-    flash(u'Flash Trying Blah', 'success')
+    # flash(u'Flash Trying Blah', 'success')
     # if app.debug:
     #     return requests.get('http://localhost:8080/{}'.format(path)).text
     return render_template('index.html')
@@ -49,7 +49,7 @@ def index_html(path):
 
 
 @app.route("/api/toast")
-def Toast(msg="Sending Toast from Server",typ="success"):
+def Toast(msg="Sending Ping from Server",typ="success"):
       socketio.emit('toast', {'msg':msg,'type':typ})
       return make_response("success")
 
