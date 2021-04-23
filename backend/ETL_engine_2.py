@@ -186,6 +186,7 @@ class ETLEngine:
             sourceattribute=nt.getElementsByTagName("sourceAttribute")[0].firstChild.data
             destattribute=nt.getElementsByTagName("destinationAttribute")[0].firstChild.data
             self.dict.update({sourceattribute:destattribute})
+            
         return 0
  
         
