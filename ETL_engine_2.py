@@ -2,6 +2,8 @@ import xml.dom.minidom as dompar
 import mysql.connector as mysql
 import sql_metadata, re
 import pandas as pd
+import csv
+
 class ETLEngine:
     def __init__(self,xmlFile):
         self.dict={}
@@ -34,8 +36,74 @@ class ETLEngine:
             username= sql.getElementsByTagName("username")[0].firstChild.data
             password = sql.getElementsByTagName("password")[0].firstChild.data
             self.my_db = self.db_connection("localhost",username,password,self.usr_db_name)
-        elif(isFTP):
-            print("Coming Soon")
+        elif(self.isFTP):
+            ftp = i.getElementsByTagName("FTP")[0]
+            username= ftp.getElementsByTagName("username")[0].firstChild.data
+            password = ftp.getElementsByTagName("password")[0].firstChild.data
+            self.usr_db_name = ftp.getElementsByTagName("database_name")[0].firstChild.data
+            file_name= ftp.getElementsByTagName("file_name")[0].firstChild.data
+            self.my_db = self.db_connection("localhost",username,password,self.usr_db_name)
+            with open (file_name, 'r') as f:
+                # print("got through open")
+                data=pd.read_csv(f)
+                # print(data)
+                df=pd.DataFrame(data)
+                # print(df.dtypes)
+                # print(df.columns)
+                create_query="create table temp ("
+                k=0
+                for i in df.columns:
+                    create_query = create_query + str(i).replace('"',"")+" "
+                    if(df.dtypes[k]=="int64"):
+                        create_query = create_query + "int ,"
+                    elif(df.dtypes[k] == "object"):
+                        create_query = create_query + "varchar(255),"
+                    k=k+1
+                create_query=create_query[:-1]+")"
+                # print(create_query)
+                cursor = self.my_db.cursor()
+                cursor.execute("drop table temp;")
+                cursor.execute(create_query)
+                myresult=[]
+                for i in range(len(df)):
+                    temp_result=[]
+                    for j in range(len(df.columns)):
+                        if(type(df.iloc[i][j])=="int64"):
+                            temp_result.append(int(df.iloc[i][j]))
+                        else:
+                            temp_result.append(str(df.iloc[i][j]))
+                    temp_result=tuple(temp_result)
+                    myresult.append(temp_result)
+                
+                attr=""
+                values=""
+                # columns=[]
+                for i in df.columns:
+                    attr=attr+i+","
+                    values=values+"%s,"
+                attr=attr[:-1]
+                values=values[:-1]
+                str_query="INSERT INTO temp ({0}) VALUES ({1}) ".format(attr,values)
+                mySql_insert_query = """{0}""".format(str_query)
+                # print(mySql_insert_query)
+                cursor.executemany(mySql_insert_query, myresult)
+                self.my_db.commit()
+                # print("after db_commit")
+            # with open(file_name,'r') as f:
+            #     reader=csv.reader(f)
+            #     data=next(reader)
+            #     query= "insert into file values ({0})"
+            #     query=query.format(','.join('?' * len(data))).format
+            # self.my_db.cursor.execute(query,data)
+            # for data in reader:
+            #     self.my_db.cursor.execute(query,data)    
+            # self.my_db.cursor.commit()
+
+
+
+
+
+
 
 
     def extract(self,i):
@@ -47,9 +115,12 @@ class ETLEngine:
         # self.mycursor.execute("CREATE table query(val int);")
         self.mycursor.execute("DROP table query;")
         upd_query="CREATE table query as "+q[0]+";"
+        # print(upd_query)
         self.mycursor.execute(upd_query)
-        self.mycursor.execute("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = \"query\"")
+        stm="SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = \"query\" and TABLE_SCHEMA = \"{0}\"".format(self.usr_db_name)
+        self.mycursor.execute(stm);
         col=self.mycursor.fetchall()
+        # print(col)
         self.srcColumns=[]
         for i1 in col:
             for j in i1:
@@ -126,15 +197,21 @@ class ETLEngine:
             return "problem with ET","ERROR"
         for i in et:
             try:
+                # print("inselect")
                 self.select(i)
+                # print("afterselect")
             except:
                 return "problem with select","ERROR"
             try:
                 self.mycursor = self.my_db.cursor(buffered=True)
+                # print("reached here")
+                
             except:
                 return "problem with mycursor","ERROR"
             try:
+                # print("before extract")
                 q = self.extract(i)
+                # print("after extract")
             except:
                 return "problem with extraction","ERROR"
         
@@ -164,7 +241,7 @@ class ETLEngine:
                 self.mycursor.execute("select * from query")
             except:
                 return "Last execute query","ERROR"
-            
+            # print("after query")
             try:
                 self.my_db.commit()
                 myresult = self.mycursor.fetchall()
@@ -188,6 +265,7 @@ class ETLEngine:
         # values=values[:-1]
             try:
                 for i in self.srcColumns:
+                    # print(i)
                     if(i in self.dict):
                         insert_1=insert_1+ self.dict[i] +","
                         values=values+"%s,"
@@ -206,6 +284,7 @@ class ETLEngine:
                 # print("There maybe some parameter with no transformation")
                 
             mySql_insert_query = """{0}""".format(str_query)
+            # print(mySql_insert_query)
             # print(myresult)
             try:
                 self.datawarehouse_cursor.executemany(mySql_insert_query, myresult)
@@ -214,7 +293,7 @@ class ETLEngine:
                 return "Please mention tranformations for each attribute selected","ERROR"
                 # print("There maybe some parameter with no transformation")
                 
-            # print("Success")
+        # print("Success")
         return "","SUCCESS"
                    
 

@@ -24,7 +24,8 @@
     <sequence>
       <element type="string" name="username" />
       <element type="string" name="password" />
-      <element type="string" name="ip-address"/>
+      <element type="string" name="database_name"/>
+      <element type="string" name="file_name" />
     </sequence>
   </complexType>
 
