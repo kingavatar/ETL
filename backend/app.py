@@ -49,8 +49,8 @@ def index_html(path):
 
 
 @app.route("/api/toast")
-def Toast(msg="Sending Toast from Server",type="success"):
-      socketio.emit('toast', {'msg':msg,'type':type})
+def Toast(msg="Sending Toast from Server",typ="success"):
+      socketio.emit('toast', {'msg':msg,'type':typ})
       return make_response("success")
 
 @app.route("/api/xmlFile",methods=['POST'])
@@ -62,8 +62,8 @@ def XmlFile():
       with open("example_2.xml", "w") as text_file:
         text_file.write(data1)
       e = ETLEngine("example_2.xml",socketio)
-      e.run()
-      Toast("Operation Succeded","success")
+      msg,typ = e.run()
+      Toast(msg,typ)
       return make_response("success")
 
 if __name__ == '__main__':
