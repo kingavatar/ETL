@@ -6,7 +6,7 @@
           <b-button>Back</b-button>
         </b-col>
         <b-col>
-          <b-button @click="makeToast('info')">Toast</b-button>
+          <b-button @click="makeToast('info')">Ping Server!</b-button>
         </b-col>
         <b-col>
           <b-button type="submit">Run</b-button>
