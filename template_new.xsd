@@ -25,7 +25,8 @@
       <element type="string" name="username" />
       <element type="string" name="password" />
       <element type="string" name="database_name"/>
-      <element type="string" name="file_name" />
+<element type="string" name="fileURL" />
+
     </sequence>
   </complexType>
 
@@ -58,7 +59,8 @@
 
   <complexType name="ArthimeticTransformationType">
     <sequence>
-      <element type="string" name="sourceAttribute"  />
+<element type="string" name="sourceAttribute" />
+
       <element type="string" name="destinationAttribute"/>
       <element type="string" name="arthimeticFormulae" />
     </sequence>
@@ -66,7 +68,8 @@
 
   <complexType name="NullTransformationType">
     <sequence>
-      <element type="string" name="sourceAttribute"  />
+<element type="string" name="sourceAttribute" />
+
       <element type="string" name="destinationAttribute" />
     </sequence>
   </complexType>
@@ -108,6 +111,6 @@
     <sequence>
       <element type="sample:EtType" name="ET" minOccurs="1" maxOccurs="unbounded"/>
       <element type="sample:DestinationDetailsType" name="DestinationDetails" minOccurs="1" />
-      </sequence>
+    </sequence>
   </complexType>
 </schema>

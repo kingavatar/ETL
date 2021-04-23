@@ -41,55 +41,57 @@ class ETLEngine:
             username= ftp.getElementsByTagName("username")[0].firstChild.data
             password = ftp.getElementsByTagName("password")[0].firstChild.data
             self.usr_db_name = ftp.getElementsByTagName("database_name")[0].firstChild.data
-            file_name= ftp.getElementsByTagName("file_name")[0].firstChild.data
+            fileURL= ftp.getElementsByTagName("fileURL")[0].firstChild.data
             self.my_db = self.db_connection("localhost",username,password,self.usr_db_name)
-            with open (file_name, 'r') as f:
-                # print("got through open")
-                data=pd.read_csv(f)
-                # print(data)
-                df=pd.DataFrame(data)
-                # print(df.dtypes)
-                # print(df.columns)
-                create_query="create table temp ("
-                k=0
-                for i in df.columns:
-                    create_query = create_query + str(i).replace('"',"")+" "
-                    if(df.dtypes[k]=="int64"):
-                        create_query = create_query + "int ,"
-                    elif(df.dtypes[k] == "object"):
-                        create_query = create_query + "varchar(255),"
-                    k=k+1
-                create_query=create_query[:-1]+")"
-                # print(create_query)
-                cursor = self.my_db.cursor()
-                cursor.execute("drop table temp;")
-                cursor.execute(create_query)
-                myresult=[]
-                for i in range(len(df)):
-                    temp_result=[]
-                    for j in range(len(df.columns)):
-                        if(type(df.iloc[i][j])=="int64"):
-                            temp_result.append(int(df.iloc[i][j]))
-                        else:
-                            temp_result.append(str(df.iloc[i][j]))
-                    temp_result=tuple(temp_result)
-                    myresult.append(temp_result)
-                
-                attr=""
-                values=""
-                # columns=[]
-                for i in df.columns:
-                    attr=attr+i+","
-                    values=values+"%s,"
-                attr=attr[:-1]
-                values=values[:-1]
-                str_query="INSERT INTO temp ({0}) VALUES ({1}) ".format(attr,values)
-                mySql_insert_query = """{0}""".format(str_query)
-                # print(mySql_insert_query)
-                cursor.executemany(mySql_insert_query, myresult)
-                self.my_db.commit()
-                # print("after db_commit")
-            # with open(file_name,'r') as f:
+            # response = urllib2.urlopen(url)
+            # with open (, 'r') as f:
+            # print("got through open")
+            data=pd.read_csv(fileURL)
+            # print(data)
+            df=pd.DataFrame(data)
+            # print(df.dtypes)
+            # print(df.columns)
+            create_query="create table temp ("
+            k=0
+            for i in df.columns:
+                create_query = create_query + str(i).replace('"',"")+" "
+                if(df.dtypes[k]=="int64"):
+                    create_query = create_query + "int ,"
+                elif(df.dtypes[k] == "object"):
+                    create_query = create_query + "varchar(255),"
+                k=k+1
+            create_query=create_query[:-1]+")"
+            # print(create_query)
+            cursor = self.my_db.cursor()
+            cursor.execute("drop table temp;")
+            cursor.execute(create_query)
+            # print(create_query)
+
+            myresult=[]
+            for i in range(len(df)):
+                temp_result=[]
+                for j in range(len(df.columns)):
+                    if(type(df.iloc[i][j])=="int64"):
+                        temp_result.append(int(df.iloc[i][j]))
+                    else:
+                        temp_result.append(str(df.iloc[i][j]))
+                temp_result=tuple(temp_result)
+                myresult.append(temp_result)
+            attr=""
+            values=""
+            # columns=[]
+            for i in df.columns:
+                attr=attr+i+","
+                values=values+"%s,"
+            attr=attr[:-1]
+            values=values[:-1]
+            str_query="INSERT INTO temp ({0}) VALUES ({1}) ".format(attr,values)
+            mySql_insert_query = """{0}""".format(str_query)
+            # print("insert Query ",mySql_insert_query)
+            cursor.executemany(mySql_insert_query, myresult)
+            self.my_db.commit()
+            # print("after db_commit")
+            # with open(fileURL,'r') as f:
             #     reader=csv.reader(f)
             #     data=next(reader)
             #     query= "insert into file values ({0})"
@@ -298,5 +300,5 @@ class ETLEngine:
                    
 
 if __name__ == "__main__" :
-    e = ETLEngine("example_2.xml")
-    e.run()
+    e = ETLEngine("example_ftp.xml")
+    print(e.run())

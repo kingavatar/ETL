@@ -4,10 +4,10 @@
 	<sourceDetails>
 		<sourceinfo>
 			<FTP>
-				<username>osurihimeshkrishna</username>
-				<password>password</password>
+<username>saikiran</username>
+<password>pass123</password>
                 <database_name>airbase</database_name>
-                <file_name>employee.csv</file_name>
+<fileURL>ftp://localhost:2121/employee.csv</fileURL>
 			</FTP>
 		</sourceinfo>
 	</sourceDetails>
@@ -55,8 +55,8 @@
 			<name>datawarehouse</name>
 			<driver>org.mysql</driver>
 			<protocol>SQl</protocol>
-			<username>osurihimeshkrishna</username>
-			<password>password</password>
+<username>saikiran</username>
+<password>pass123</password>
 		</DestinationInfo>
 	</DestinationDetails>
 </ETL>
