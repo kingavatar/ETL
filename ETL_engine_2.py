@@ -196,6 +196,7 @@ class ETLEngine:
         except:
             return "problem with ET","ERROR"
         for i in et:
+            
             try:
                 # print("inselect")
                 self.select(i)
@@ -298,5 +299,5 @@ class ETLEngine:
                    
 
 if __name__ == "__main__" :
-    e = ETLEngine("example_2.xml")
-    e.run()
+    e = ETLEngine("example_ftp.xml")
+    print(e.run())
