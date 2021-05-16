@@ -11,12 +11,9 @@ mysql-connector-python = "*"
 pandas = "*"
 sql-metadata = "*"
 flask-socketio = "*"
-<<<<<<< HEAD
-=======
 pyftpdlib = "*"
->>>>>>> f17e54ad61faf6f2880ab6283bb35f63daa0df99
 
 [dev-packages]
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"
