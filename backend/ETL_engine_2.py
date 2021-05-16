@@ -115,7 +115,7 @@ class ETLEngine:
             q.append(query.firstChild.data)
         #extracting table,columns from query
         # self.mycursor.execute("CREATE table query(val int);")
-        self.mycursor.execute("DROP table query;")
+        self.mycursor.execute("DROP table if exists  query;")
         upd_query="CREATE table query as "+q[0]+";"
         self.mycursor.execute(upd_query)
         stm="SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = \"query\" and TABLE_SCHEMA=\"{0}\"".format(self.usr_db_name)
@@ -239,9 +239,8 @@ class ETLEngine:
                     self.Toast("arth tranform is given which is not present in the select statement\n"+qu,"danger")
                     return "Operation Failed due to Arthimetic Tranformation Details","danger"
 
-            # print(self.dict)
 
-            self.mycursor.execute("select * from query")
+            self.mycursor.execute("select "+",".join(list(self.dict.keys()))+" from query")
             self.my_db.commit()
             myresult = self.mycursor.fetchall()
             self.Toast("Tranformation Done","info")
@@ -263,9 +262,10 @@ class ETLEngine:
         # values=values[:-1]
             for i in self.srcColumns:
                 if(i in self.dict):
-                    insert_1=insert_1+ self.dict[i] +","
+                    # insert_1=insert_1+ self.dict[i] +","
                     values=values+"%s,"
-            insert_1=insert_1[:-1]
+            # insert_1=insert_1[:-1]
+            insert_1=",".join(list(self.dict.values()))
             values=values[:-1]
             # print(insert_1)
             # print(values)
