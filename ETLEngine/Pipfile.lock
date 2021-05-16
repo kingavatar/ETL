@@ -1,11 +1,26 @@
 {
     "_meta": {
         "hash": {
+<<<<<<< HEAD
             "sha256": "723acc91937464e8dee554753d3ef8f0a63090363adc3301fc7337340c52ce7c"
+=======
+<<<<<<< HEAD
+            "sha256": "9398b6082e09509c580d5d981e13ea7399079976a512b6e701ae1bee4818c3b1"
+>>>>>>> f17e54ad61faf6f2880ab6283bb35f63daa0df99
         },
         "pipfile-spec": 6,
         "requires": {
             "python_version": "3.9"
+<<<<<<< HEAD
+=======
+=======
+            "sha256": "8684575dc2e2ee3ef130963dade592c67e470b510ee5ccd3a60920b144ac8e32"
+        },
+        "pipfile-spec": 6,
+        "requires": {
+            "python_version": "3.8"
+>>>>>>> e7ae3df (Added flask with vue integration)
+>>>>>>> f17e54ad61faf6f2880ab6283bb35f63daa0df99
         },
         "sources": [
             {
@@ -16,6 +31,10 @@
         ]
     },
     "default": {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f17e54ad61faf6f2880ab6283bb35f63daa0df99
         "certifi": {
             "hashes": [
                 "sha256:1a4995114262bffbc2413b159f2a1a480c969de6e6eb13ee966d470af86af59c",
@@ -31,6 +50,11 @@
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
             "version": "==4.0.0"
         },
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> e7ae3df (Added flask with vue integration)
+>>>>>>> f17e54ad61faf6f2880ab6283bb35f63daa0df99
         "click": {
             "hashes": [
                 "sha256:d2b5255c7c6349bc1bd1e59e08cd12acbbd63ce649f2588755783aa94dfb6b1a",
@@ -47,6 +71,10 @@
             "index": "pypi",
             "version": "==1.1.2"
         },
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f17e54ad61faf6f2880ab6283bb35f63daa0df99
         "flask-cors": {
             "hashes": [
                 "sha256:74efc975af1194fc7891ff5cd85b0f7478be4f7f59fe158102e91abb72bb4438",
@@ -63,6 +91,11 @@
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==2.10"
         },
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> e7ae3df (Added flask with vue integration)
+>>>>>>> f17e54ad61faf6f2880ab6283bb35f63daa0df99
         "itsdangerous": {
             "hashes": [
                 "sha256:321b033d07f2a4136d3ec762eac9f16a10ccd60f53c0c91af90217ace7ba1f19",
@@ -137,6 +170,7 @@
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==1.1.1"
         },
+<<<<<<< HEAD
         "mysql-connector-python": {
             "hashes": [
                 "sha256:0f41b3142fe5325e830a3420915a6cf652b9da1d3a8e0df11bade1c120c0fc2c",
@@ -165,6 +199,31 @@
             ],
             "index": "pypi",
             "version": "==8.0.23"
+=======
+<<<<<<< HEAD
+        "mysql-connector-python": {
+            "hashes": [
+                "sha256:13acb968c2b9ed165a569d5144a6fe6bb2b3073385b43387a2568e97979157d1",
+                "sha256:1be5cbb864c43ab86618e8bff0a489c2393fb788b9b789ce357933c8d56a64a8",
+                "sha256:1cf8e667e16fa02c31ff83e8069f6e99d0a61f99e2a6b2ed364e48591d83fb52",
+                "sha256:23a327e20dd048ad421465f6f946127b316b9c5aeb9fb85a037703fe71ccf6de",
+                "sha256:2665ccdf682bdf12f09fa40bad96167014c3ff53250483fa19068dd465ad5821",
+                "sha256:2a6d672b5ec7860977c9c7c3ab55d57227157853b7dac035d04e5d869d41b45f",
+                "sha256:3aa9366e4ef69f5a4349719d4ec2a7c59dac584de7e01cec5bb1c34b557377a5",
+                "sha256:41b1c1992181dd2f2c3ee8f4f13230baa22cf2872d40ba94bc8790a07aa27dc9",
+                "sha256:528fbdf2f4ee700b38579aad6969939cce294aa9644a1ba8479aa2c169804074",
+                "sha256:5f5d49ffb563c6c0fe9b607cab02a7cf98814677f8d4a66e0acdfec521f91db2",
+                "sha256:644f3ec2da1b36acfba5f286b36422aad42760284d6fd9585c17a93e5c667663",
+                "sha256:73f0fb24ff5ffc49811efd6514ce48393ced8615d070dfefe2c4cddb9302a2e7",
+                "sha256:9bb84e8cee2668d4f202ed7298bb52c08b85e22aee9a05f2b2176cb0ca786cc3",
+                "sha256:b3d92d57f145a79cf8e57ab9ecdae8acf3c5c631a9483a3e52450b473e08a8dd",
+                "sha256:e2734f01b8416aec9d0e506889522ee2ea8666afee433f3595df1e9c57057cdf",
+                "sha256:e39a72bb3e9c2082be16396838dd905f2fa0a545898cd06c913d0519b58b5619",
+                "sha256:e46ea2b7df8e3a525b3121f831290fac32a94553ef91d56ed02557236dbd14c0"
+            ],
+            "index": "pypi",
+            "version": "==8.0.24"
+>>>>>>> f17e54ad61faf6f2880ab6283bb35f63daa0df99
         },
         "numpy": {
             "hashes": [
@@ -243,6 +302,16 @@
             ],
             "version": "==3.15.8"
         },
+<<<<<<< HEAD
+=======
+        "pyftpdlib": {
+            "hashes": [
+                "sha256:fda655d81f29af52885ca2f8a2704134baed540f16d66a0b26e8fdfafd12db5e"
+            ],
+            "index": "pypi",
+            "version": "==1.5.6"
+        },
+>>>>>>> f17e54ad61faf6f2880ab6283bb35f63daa0df99
         "python-dateutil": {
             "hashes": [
                 "sha256:73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c",
@@ -298,6 +367,11 @@
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4.0'",
             "version": "==1.26.4"
         },
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> e7ae3df (Added flask with vue integration)
+>>>>>>> f17e54ad61faf6f2880ab6283bb35f63daa0df99
         "werkzeug": {
             "hashes": [
                 "sha256:2de2a5db0baeae7b2d2664949077c2ac63fbd16d98da0ff71837f7d1dea3fd43",

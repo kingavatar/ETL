@@ -4,12 +4,15 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+<<<<<<< HEAD
 flask = "*"
 flask-cors = "*"
 requests = "*"
 mysql-connector-python = "*"
 pandas = "*"
 sql-metadata = "*"
+=======
+>>>>>>> f17e54ad61faf6f2880ab6283bb35f63daa0df99
 
 [dev-packages]
 

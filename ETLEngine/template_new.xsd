@@ -24,7 +24,13 @@
     <sequence>
       <element type="string" name="username" />
       <element type="string" name="password" />
+<<<<<<< HEAD
       <element type="string" name="ip-address"/>
+=======
+      <element type="string" name="database_name"/>
+<element type="string" name="fileURL" />
+
+>>>>>>> f17e54ad61faf6f2880ab6283bb35f63daa0df99
     </sequence>
   </complexType>
 
@@ -39,8 +45,14 @@
 
   <complexType name="Extract">
     <sequence >
+<<<<<<< HEAD
       <element type="string" name="Query" maxOccurs="1" minOccurs="1" />
       <element type="string" name="DstTable" maxOccurs="1" minOccurs="1" />
+=======
+<element type="string" name="Query" />
+<element type="string" name="DstTable" />
+
+>>>>>>> f17e54ad61faf6f2880ab6283bb35f63daa0df99
     </sequence>
   </complexType>
 
@@ -57,7 +69,12 @@
 
   <complexType name="ArthimeticTransformationType">
     <sequence>
+<<<<<<< HEAD
       <element type="string" name="sourceAttribute"  />
+=======
+<element type="string" name="sourceAttribute" />
+
+>>>>>>> f17e54ad61faf6f2880ab6283bb35f63daa0df99
       <element type="string" name="destinationAttribute"/>
       <element type="string" name="arthimeticFormulae" />
     </sequence>
@@ -65,7 +82,12 @@
 
   <complexType name="NullTransformationType">
     <sequence>
+<<<<<<< HEAD
       <element type="string" name="sourceAttribute"  />
+=======
+<element type="string" name="sourceAttribute" />
+
+>>>>>>> f17e54ad61faf6f2880ab6283bb35f63daa0df99
       <element type="string" name="destinationAttribute" />
     </sequence>
   </complexType>
@@ -107,6 +129,10 @@
     <sequence>
       <element type="sample:EtType" name="ET" minOccurs="1" maxOccurs="unbounded"/>
       <element type="sample:DestinationDetailsType" name="DestinationDetails" minOccurs="1" />
+<<<<<<< HEAD
       </sequence>
+=======
+    </sequence>
+>>>>>>> f17e54ad61faf6f2880ab6283bb35f63daa0df99
   </complexType>
 </schema>

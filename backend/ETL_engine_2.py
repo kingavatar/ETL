@@ -39,8 +39,73 @@ class ETLEngine:
             username= sql.getElementsByTagName("username")[0].firstChild.data
             password = sql.getElementsByTagName("password")[0].firstChild.data
             self.my_db = self.db_connection("localhost",username,password,self.usr_db_name)
-        elif(isFTP):
-            print("Coming Soon")
+        elif(self.isFTP):
+            ftp = i.getElementsByTagName("FTP")[0]
+            username= ftp.getElementsByTagName("username")[0].firstChild.data
+            password = ftp.getElementsByTagName("password")[0].firstChild.data
+            self.usr_db_name = ftp.getElementsByTagName("database_name")[0].firstChild.data
+            fileURL= ftp.getElementsByTagName("fileURL")[0].firstChild.data
+            self.my_db = self.db_connection("localhost",username,password,self.usr_db_name)
+            # response = urllib2.urlopen(url)
+            # with open (, 'r') as f:
+            print("got through open")
+            print("fileUrl",fileURL)
+            data=pd.read_csv(fileURL)
+            # print(data)
+            df=pd.DataFrame(data)
+            # print(df.dtypes)
+            # print(df.columns)
+            # cursor.execute("drop table temp;")
+            create_query="create table temp ("
+            k=0
+            for i in df.columns:
+                create_query = create_query + str(i).replace('"',"")+" "
+                if(df.dtypes[k]=="int64"):
+                    create_query = create_query + "int ,"
+                elif(df.dtypes[k] == "object"):
+                    create_query = create_query + "varchar(255),"
+                k=k+1
+            create_query=create_query[:-1]+")"
+            # print(create_query)
+            cursor = self.my_db.cursor()
+            cursor.execute("drop table if exists temp;")
+            cursor.execute(create_query)
+            print(create_query)
+
+            myresult=[]
+            for i in range(len(df)):
+                temp_result=[]
+                for j in range(len(df.columns)):
+                    if(type(df.iloc[i][j])=="int64"):
+                        temp_result.append(int(df.iloc[i][j]))
+                    else:
+                        temp_result.append(str(df.iloc[i][j]))
+                temp_result=tuple(temp_result)
+                myresult.append(temp_result)
+            attr=""
+            values=""
+            # columns=[]
+            for i in df.columns:
+                attr=attr+i+","
+                values=values+"%s,"
+            attr=attr[:-1]
+            values=values[:-1]
+            str_query="INSERT INTO temp ({0}) VALUES ({1}) ".format(attr,values)
+            mySql_insert_query = """{0}""".format(str_query)
+            # print("insert Query ",mySql_insert_query)
+            cursor.executemany(mySql_insert_query, myresult)
+            self.my_db.commit()
+            # print("after db_commit")
+            # with open(fileURL,'r') as f:
+            #     reader=csv.reader(f)
+            #     data=next(reader)
+            #     query= "insert into file values ({0})"
+            #     query=query.format(','.join('?' * len(data))).format
+            # self.my_db.cursor.execute(query,data)
+            # for data in reader:
+            #     self.my_db.cursor.execute(query,data)    
+            # self.my_db.cursor.commit()
+
 
 
     def extract(self,i):
@@ -123,12 +188,17 @@ class ETLEngine:
             sourceattribute=nt.getElementsByTagName("sourceAttribute")[0].firstChild.data
             destattribute=nt.getElementsByTagName("destinationAttribute")[0].firstChild.data
             self.dict.update({sourceattribute:destattribute})
+            
         return 0
  
         
     def run(self):
         et=self.doc.getElementsByTagName("ET")
         for i in et:
+            sql = i.getElementsByTagName("SQL")
+            ftp = i.getElementsByTagName("FTP")
+            self.isSQL=(ftp==[]) and (sql != [])
+            self.isFTP=(ftp!=[]) and (sql == [])
             try:
               self.select(i)
               self.mycursor = self.my_db.cursor(buffered=True)
@@ -137,9 +207,13 @@ class ETLEngine:
               return "Operation Failed due to Incorrect Source Details","danger"
             else:
               self.Toast("Source OLTP Access Confirmed","info")
-
-            q = self.extract(i)
-            self.Toast("Extraction Done","info")
+            try:
+              q = self.extract(i)
+            except:
+              self.Toast("Extraction Failed please Check Query","danger")
+              return "Operation Failed due to Incorrect Extraction Query","danger"
+            else:
+              self.Toast("Extraction Done","info")
             try:
                 self.destination_load(i)
             except:
@@ -152,9 +226,19 @@ class ETLEngine:
         
             for qu in tt:
                 # print(qu)
-                self.mycursor.execute(qu)
+                try:
+                    self.mycursor.execute(qu)
+                except:
+                    self.Toast("Text Tranform is given which is not present in the select statement\n"+qu,"danger")
+                    return "Operation Failed due to Incorrect Text Tranformation Details","danger"
+
             for qu in at:
-                self.mycursor.execute(qu)
+                try:
+                    self.mycursor.execute(qu)
+                except:
+                    self.Toast("arth tranform is given which is not present in the select statement\n"+qu,"danger")
+                    return "Operation Failed due to Arthimetic Tranformation Details","danger"
+
             # print(self.dict)
 
             self.mycursor.execute("select * from query")
@@ -192,10 +276,16 @@ class ETLEngine:
             # print(myresult_list)
             print(mySql_insert_query)
             print(myresult)
-            self.datawarehouse_cursor.executemany(mySql_insert_query,myresult)
-            self.data_db.commit()
-            self.Toast("Loading into Datawarehouse Done","info")
-            return "Operation Succeded","success"
+            try:
+                self.datawarehouse_cursor.executemany(mySql_insert_query, myresult)
+                self.data_db.commit()
+            except:
+                self.Toast("Please mention tranformations for each attribute selected","danger")
+                return "Please mention transformation details for each selected attribute","danger"
+            else:
+              self.Toast("Loading into Datawarehouse Done","info")
+          
+        return "Operation Succeded","success"
             # return "","Success"
 
 if __name__ == "__main__" :

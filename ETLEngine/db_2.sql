@@ -1,4 +1,3 @@
-drop database employee;
 create database employee;
 use employee;
 create table employee(id int,salary float,location varchar(255));
@@ -12,8 +11,6 @@ insert into manager values(3,3,"m3");
 create table query(id int);
 
 
-
-drop database datawarehouse;
 create database datawarehouse;
 use datawarehouse;
 create table datawarehouse(id_1 int,salary_1 float,location_1 varchar(255));
