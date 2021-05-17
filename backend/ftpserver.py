@@ -8,10 +8,10 @@ import os
 FTP_PORT = 2121
 
 # The name of the FTP user that can log in.
-FTP_USER = "osurihimeshkrishna"
+FTP_USER = "sanjay"
 
-# The FTP user's password.
-FTP_PASSWORD = "password"
+# # The FTP user's password.
+FTP_PASSWORD = "Sskr321@"
 
 # The directory the FTP user will have full read/write access to.
 FTP_DIRECTORY = "."
