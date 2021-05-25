@@ -106,8 +106,8 @@ class ETLEngine:
         self.table= "query"
         return q[0]
         
+#extracting destination details    
     def destination_load(self,i):  
-        #extracting destination details    
         sql= self.doc.getElementsByTagName("DestinationDetails")[0].getElementsByTagName("DestinationInfo")[0]
         self.datawarehouse_db_name = sql.getElementsByTagName("name")[0].firstChild.data
         driver = sql.getElementsByTagName("driver")[0].firstChild.data
@@ -227,9 +227,6 @@ class ETLEngine:
             str_query="INSERT INTO {2} ({0}) VALUES ({1}) ".format(insert_1,values,self.dsttable)
             
             mySql_insert_query = """{0}""".format(str_query)
-            # print(mySql_insert_query)
-            # print(myresult)
-            # print(values)
             try:
                 self.datawarehouse_cursor.executemany(mySql_insert_query, myresult)
                 self.data_db.commit()
